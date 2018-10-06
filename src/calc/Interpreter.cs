@@ -44,15 +44,16 @@ namespace CalcLang {
         internal async Task HandleStatementAsync( string statement ) {
             var tree = SyntaxParser.Parse( statement );
 
-            if ( _printTree ) {
-                await _out.WriteLineAsync( SyntaxTreePrinter.PrintTree( tree ) );
-            }
-
             if ( !tree.Diagnostics.IsEmpty ) {
                 foreach ( var diag in tree.Diagnostics ) {
                     await _out.WriteLineAsync( $"Error at position {diag.Position}: {diag.Message}" );
                 }
                 await HandleInvalidStatement( statement );
+                return;
+            }
+
+            if ( _printTree ) {
+                await _out.WriteLineAsync( SyntaxTreePrinter.PrintTree( tree ) );
             }
 
             var result = _evaluator.Evaluate( tree.Root.Expression );
