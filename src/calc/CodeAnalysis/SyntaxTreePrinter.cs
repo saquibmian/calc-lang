@@ -22,7 +22,7 @@ namespace CalcLang.CodeAnalysis {
             var marker = isLast ? "└──" : "├──";
             writer.WriteLine( $"{indent}{marker}{node.Kind}: {node}" );
 
-            indent = indent + ( isLast ? "\t" : "│   " );
+            indent = indent + ( isLast ? "    " : "│   " );
             var children = node.ChildNodes().ToArray();
             for ( int i = 0; i < children.Length; ++i ) {
                 var child = children[i];
