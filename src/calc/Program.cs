@@ -4,15 +4,9 @@ using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
     internal sealed class Program {
-        internal static async Task Main( string[] args ) {
-            var reader = new StatementReader( Console.In );
-            var interpreter = new Interpreter( Console.Out );
-
-            while ( !interpreter.Done ) {
-                await Console.Out.WriteAsync( "> " );
-                var statement = await reader.ReadStatementAsync();
-                await interpreter.ExecuteAsync( statement );
-            }
+        internal static void Main( string[] args ) {
+            var interpreter = new Interpreter();
+            interpreter.Run();
         }
     }
 }

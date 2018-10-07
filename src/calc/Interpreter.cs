@@ -7,71 +7,69 @@ namespace CalcLang {
     internal sealed class Interpreter {
 
         private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
-        private readonly TextWriter _out;
-
         private bool _printTree;
+        private bool _done;
 
-        internal Interpreter( TextWriter output ) {
-            _out = output ?? throw new ArgumentNullException( nameof( output ) );
+        internal void Run() {
+            while ( !_done ) {
+                Console.Write( "> " );
+                var statement = Console.ReadLine();
+                Execute( statement );
+            }
         }
 
-        internal bool Done { get; private set; }
-
-        internal Task ExecuteAsync( string statement ) {
-            if ( TryGetHandlerForCommand( statement, out var commandHandler ) ) {
-                return commandHandler;
+        private void Execute( string statement ) {
+            if ( TryHandleCommand( statement ) ) {
+                return;
             }
 
-            return HandleStatementAsync( statement );
+            HandleStatementAsync( statement );
         }
 
-        internal bool TryGetHandlerForCommand( string statement, out Task handler ) {
+        private bool TryHandleCommand( string statement ) {
             switch ( statement ) {
                 case "#showTree":
-                    handler = HandleShowTree();
+                    HandleShowTree();
                     return true;
 
                 case "quit":
-                    handler = HandleQuitAsync();
+                    HandleQuitAsync();
                     return true;
 
                 default:
-                    handler = default;
                     return false;
             }
         }
 
-        internal async Task HandleStatementAsync( string statement ) {
+        private void HandleStatementAsync( string statement ) {
             var tree = SyntaxParser.Parse( statement );
 
             if ( _printTree ) {
-                await _out.WriteLineAsync( SyntaxTreePrinter.PrintTree( tree ) );
+                using ( new OutputColor( foreground: ConsoleColor.DarkGreen ) ) {
+                    Console.WriteLine( SyntaxTreePrinter.PrintTree( tree ) );
+                }
             }
 
             if ( !tree.Diagnostics.IsEmpty ) {
-                foreach ( var diag in tree.Diagnostics ) {
-                    await _out.WriteLineAsync( $"Error at position {diag.Position}: {diag.Message}" );
+                using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
+                    foreach ( var diag in tree.Diagnostics ) {
+                        Console.WriteLine( $"Error at position {diag.Position}: {diag.Message}" );
+                    }
+                    return;
                 }
-                await HandleInvalidStatement( statement );
-                return;
             }
 
             var result = _evaluator.Evaluate( tree.Root.Expression );
-            await _out.WriteLineAsync( $"{result}" );
+            Console.WriteLine( $"{result}" );
         }
 
-        private Task HandleShowTree() {
+        private void HandleShowTree() {
             _printTree = !_printTree;
-            return Task.CompletedTask;
         }
 
-        private Task HandleQuitAsync() {
-            Done = true;
-            return _out.WriteLineAsync( "done" );
-        }
-
-        private Task HandleInvalidStatement( string statement ) {
-            return _out.WriteLineAsync( $"ERROR: Invalid statement '{statement}'" );
+        private void HandleQuitAsync() {
+            _done = true;
+            Console.WriteLine( "done" );
         }
 
     }
