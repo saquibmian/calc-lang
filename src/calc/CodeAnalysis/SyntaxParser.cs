@@ -85,6 +85,12 @@ namespace CalcLang.CodeAnalysis {
         }
 
         private ExpressionSyntax ParsePrimaryExpression() {
+            if ( Current.Kind == SyntaxKind.IdentiferToken ) {
+                var methodName = Expect( SyntaxKind.IdentiferToken );
+                var arguments = ParseArgumentList();
+                return new InvocationExpressionSyntax( methodName, arguments );
+            }
+
             if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
                 var open = Expect( SyntaxKind.OpenParenthesisToken );
                 var expression = ParseTerm();
@@ -94,6 +100,34 @@ namespace CalcLang.CodeAnalysis {
 
             var token = Expect( SyntaxKind.IntegerToken );
             return new NumberExpressionSyntax( token );
+        }
+
+        private ArgumentListSyntax ParseArgumentList() {
+            var open = Expect( SyntaxKind.OpenParenthesisToken );
+
+            var args = new List<ArgumentSyntax>();
+            var separators = new List<SyntaxToken>();
+            while ( Current.Kind != SyntaxKind.CloseParenthesisToken ) {
+                var arg = ParseArgument();
+                args.Add( arg );
+
+                if ( Current.Kind == SyntaxKind.CloseParenthesisToken ) {
+                    break;
+                }
+
+                var separator = Expect( SyntaxKind.CommaToken );
+                separators.Add( separator );
+            }
+            var arguments = new SeparatedSyntaxList<ArgumentSyntax>( args, separators );
+
+            var close = Expect( SyntaxKind.CloseParenthesisToken );
+
+            return new ArgumentListSyntax( open, arguments, close );
+        }
+
+        private ArgumentSyntax ParseArgument() {
+            var expression = ParseTerm();
+            return new ArgumentSyntax( expression );
         }
 
     }

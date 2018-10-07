@@ -4,8 +4,8 @@ A custom language!
 
 ```
 function foo(a: Int32, b: Int32): Int32 {
-    a = a * 2;
-    return pow(a, b);
+    a = a * 2
+    return pow(a, b)
 }
 
 function addAll(all: ...Int32): Int32 {
@@ -23,4 +23,5 @@ function addAll(all: ...Int32): Int32 {
 
 [x] parse identifiers
 [x] parse numeric expression
-[ ] parse expressions calling builtin functions
+[x] parse expressions calling builtin functions
+[ ] parse multiple statements

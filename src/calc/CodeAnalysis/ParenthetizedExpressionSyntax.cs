@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
     internal sealed class ParenthetizedExpressionSyntax : ExpressionSyntax {
-        public ParenthetizedExpressionSyntax( SyntaxToken openParenthesis, ExpressionSyntax expression, SyntaxToken closeParenthesis ) {
+        internal ParenthetizedExpressionSyntax( SyntaxToken openParenthesis, ExpressionSyntax expression, SyntaxToken closeParenthesis ) {
             Expression = expression;
         }
 
-        public ExpressionSyntax Expression { get; }
+        internal ExpressionSyntax Expression { get; }
 
         internal override SyntaxKind Kind => SyntaxKind.ParenthetizedExpression;
 

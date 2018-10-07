@@ -40,7 +40,7 @@ namespace CalcLang.CodeAnalysis {
                 case '\0':
                     return new SyntaxToken( SyntaxKind.EndOfFileToken, start, "\0", null );
 
-                // operator
+                // one-character tokens
                 case '+':
                     Next();
                     return new SyntaxToken( SyntaxKind.PlusToken, start, "+", null );
@@ -59,6 +59,9 @@ namespace CalcLang.CodeAnalysis {
                 case ')':
                     Next();
                     return new SyntaxToken( SyntaxKind.CloseParenthesisToken, start, ")", null );
+                case ',':
+                    Next();
+                    return new SyntaxToken( SyntaxKind.CommaToken, start, ",", null );
 
                 // whitespace
                 case var ws when char.IsWhiteSpace( ws ):

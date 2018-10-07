@@ -11,9 +11,15 @@ namespace CalcLang.CodeAnalysis {
         OpenParenthesisToken,
         CloseParenthesisToken,
         BadToken,
+        CommaToken,
+
         NumberExpression,
         Statement,
         BinaryExpression,
-        ParenthetizedExpression
+        ParenthetizedExpression,
+        InvocationExpression,
+        ArgumentList,
+        SeparatedSyntaxList,
+        Argument
     }
 }

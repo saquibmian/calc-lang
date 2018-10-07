@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
@@ -13,6 +14,9 @@ namespace CalcLang {
 
                 case ParenthetizedExpressionSyntax p:
                     return Evaluate( p.Expression );
+
+                case InvocationExpressionSyntax i:
+                    return Evaluate( i );
 
                 default:
                     throw new Exception( $"Unexpected expression {expression.Kind}" );
@@ -36,6 +40,23 @@ namespace CalcLang {
                 default:
                     throw new Exception( $"Unexpected binary operator {b.OperatorToken.Kind}" );
             }
+        }
+
+        private int Evaluate( InvocationExpressionSyntax i ) {
+            switch ( i.Identifer.Value ) {
+                case "sum":
+                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression ) ).Sum();
+
+                case "min":
+                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression ) ).Min();
+
+                case "max":
+                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression ) ).Max();
+
+                default:
+                    throw new Exception( $"Unknown function {i.Identifer.Value}" );
+            }
+
         }
     }
 }
