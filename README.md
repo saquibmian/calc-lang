@@ -21,7 +21,7 @@ function addAll(all: ...Int32): Int32 {
 
 ## progress
 
-[x] parse identifiers
-[x] parse numeric expression
-[x] parse expressions calling builtin functions
-[ ] parse multiple statements
+- [x] parse identifiers
+- [x] parse numeric expression
+- [x] parse expressions calling builtin functions
+- [ ] parse multiple statements
