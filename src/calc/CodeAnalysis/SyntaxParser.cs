@@ -4,21 +4,21 @@ using System.Linq;
 
 namespace CalcLang.CodeAnalysis {
 
-    internal sealed class SyntaxParser {
+    internal sealed class Parser {
 
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
         private readonly ImmutableArray<SyntaxToken> _tokens;
 
         private int _position;
 
-        private SyntaxParser( string input ) {
+        private Parser( string input ) {
             var lexer = new Lexer( input );
             _tokens = lexer.ReadAllTokens();
             _diagnostics.AddRange( lexer.Diagnostics );
         }
 
         internal static SyntaxTree Parse( string input ) {
-            var parser = new SyntaxParser( input );
+            var parser = new Parser( input );
             return parser.ParseSyntaxTree();
         }
 
