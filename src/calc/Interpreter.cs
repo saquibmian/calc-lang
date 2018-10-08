@@ -7,6 +7,7 @@ namespace CalcLang {
     internal sealed class Interpreter {
 
         private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
+
         private bool _printTree;
         private bool _done;
 
@@ -69,7 +70,6 @@ namespace CalcLang {
 
         private void HandleQuitAsync() {
             _done = true;
-            Console.WriteLine( "done" );
         }
 
     }
