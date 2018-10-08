@@ -20,6 +20,7 @@ namespace CalcLang.CodeAnalysis {
         InvocationExpression,
         ArgumentList,
         SeparatedSyntaxList,
-        Argument
+        Argument,
+        MemberAccessExpression
     }
 }

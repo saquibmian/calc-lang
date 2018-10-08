@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
     internal sealed class ExpressionEvaluator {
+        private readonly IDictionary<string, int> _variablesByName = new Dictionary<string, int> {
+            ["PI"] = (int)Math.PI
+        };
+
         internal int Evaluate( ExpressionSyntax expression ) {
             switch ( expression ) {
                 case NumberExpressionSyntax n:
@@ -17,6 +22,9 @@ namespace CalcLang {
 
                 case InvocationExpressionSyntax i:
                     return Evaluate( i );
+
+                case MemberAccessExpressionSyntax m:
+                    return Evaluate( m );
 
                 default:
                     throw new Exception( $"Unexpected expression {expression.Kind}" );
@@ -54,8 +62,16 @@ namespace CalcLang {
                     return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression ) ).Max();
 
                 default:
-                    throw new Exception( $"Unknown function {i.Identifer.Value}" );
+                    throw new Exception( $"Unknown function '{i.Identifer.Value}'" );
             }
+        }
+
+        private int Evaluate( MemberAccessExpressionSyntax m ) {
+            if ( _variablesByName.TryGetValue( (string)m.MemberName.Value, out var value ) ) {
+                return value;
+            }
+
+            throw new Exception( $"Unknown variable '{m.MemberName.Value}'" );
         }
     }
 }
