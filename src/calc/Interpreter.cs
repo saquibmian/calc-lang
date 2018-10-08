@@ -7,7 +7,7 @@ namespace CalcLang {
     internal sealed class Interpreter {
 
         private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
-        private readonly Runtime _runtime = new Runtime();
+        private readonly Runtime _runtime = Runtime.Global.CreateScope();
 
         private bool _printTree;
         private bool _done;
