@@ -5,13 +5,13 @@ using System.Collections.Immutable;
 namespace CalcLang {
     internal sealed class Runtime {
 
-        internal static Runtime Global {
-            get {
-                var runtime = new Runtime();
-                runtime.SetVariable( "PI", (int)Math.PI );
-                return runtime;
-            }
-        }
+        private static Lazy<Runtime> _globalRuntime = new Lazy<Runtime>( () => {
+            var runtime = new Runtime();
+            runtime.SetVariable( "PI", (int)Math.PI );
+            return runtime;
+        } );
+
+        internal static Runtime Global => _globalRuntime.Value;
 
         private readonly Runtime _parent;
         private readonly Dictionary<string, int> _variablesByName = new Dictionary<string, int>();
