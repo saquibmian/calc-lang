@@ -15,7 +15,7 @@ namespace CalcLang.CodeAnalysis {
         }
 
         public override string ToString() {
-            return NumberToken.Text;
+            return NumberToken.ValueText;
         }
     }
 }

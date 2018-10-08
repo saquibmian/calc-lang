@@ -3,13 +3,13 @@ namespace CalcLang.CodeAnalysis {
         public SyntaxToken( SyntaxKind kind, int position, string text, object value ) {
             Kind = kind;
             Position = position;
-            Text = text;
+            ValueText = text;
             Value = value;
         }
 
         internal SyntaxKind Kind { get; }
         public int Position { get; }
-        public string Text { get; }
+        public string ValueText { get; }
         public object Value { get; }
     }
 }

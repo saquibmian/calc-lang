@@ -27,7 +27,7 @@ namespace CalcLang.CodeAnalysis {
             while ( nodes.MoveNext() ) {
                 builder.Append( nodes.Current );
                 if ( separators.MoveNext() ) {
-                    builder.Append( separators.Current.Text );
+                    builder.Append( separators.Current.ValueText );
                     builder.Append( " " );
                 }
             }

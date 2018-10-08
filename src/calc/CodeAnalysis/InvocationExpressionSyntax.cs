@@ -18,7 +18,7 @@ namespace CalcLang.CodeAnalysis {
 
         public override string ToString() {
             // TODO(snm): make trivia real
-            return $"{Identifer.Text}{ArgumentList}";
+            return $"{Identifer.ValueText}{ArgumentList}";
         }
     }
 }

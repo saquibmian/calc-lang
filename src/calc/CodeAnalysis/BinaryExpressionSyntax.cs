@@ -21,7 +21,7 @@ namespace CalcLang.CodeAnalysis {
 
         public override string ToString() {
             // TODO(snm): make trivia real
-            return $"{Left} {OperatorToken.Text} {Right}";
+            return $"{Left} {OperatorToken.ValueText} {Right}";
         }
     }
 }

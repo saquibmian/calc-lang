@@ -56,7 +56,6 @@ namespace CalcLang {
                 default:
                     throw new Exception( $"Unknown function {i.Identifer.Value}" );
             }
-
         }
     }
 }
