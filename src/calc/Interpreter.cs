@@ -60,7 +60,7 @@ namespace CalcLang {
                 }
             }
 
-            var result = _evaluator.Evaluate( tree.Root.Expression );
+            var result = _evaluator.Evaluate( tree.Root );
             Console.WriteLine( $"{result}" );
         }
 

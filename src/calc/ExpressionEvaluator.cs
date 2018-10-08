@@ -9,7 +9,17 @@ namespace CalcLang {
             ["PI"] = (int)Math.PI
         };
 
-        internal int Evaluate( ExpressionSyntax expression ) {
+        internal int Evaluate( StatementSyntax statement ) {
+            switch ( statement ) {
+                case ExpressionStatementSyntax e:
+                    return Evaluate( e.Expression );
+
+                default:
+                    throw new Exception( $"Unexpected expression {statement.Kind}" );
+            }
+        }
+
+        private int Evaluate( ExpressionSyntax expression ) {
             switch ( expression ) {
                 case NumberExpressionSyntax n:
                     return (int)n.NumberToken.Value;

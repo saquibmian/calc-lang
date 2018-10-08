@@ -55,7 +55,7 @@ namespace CalcLang.CodeAnalysis {
 
         private StatementSyntax ParseStatement() {
             var expression = ParseTerm();
-            return new StatementSyntax( expression );
+            return new ExpressionStatementSyntax( expression );
         }
 
         private ExpressionSyntax ParseTerm() {

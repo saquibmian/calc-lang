@@ -14,7 +14,7 @@ namespace CalcLang.CodeAnalysis {
         CommaToken,
 
         NumberExpression,
-        Statement,
+        ExpressionStatement,
         BinaryExpression,
         ParenthetizedExpression,
         InvocationExpression,
