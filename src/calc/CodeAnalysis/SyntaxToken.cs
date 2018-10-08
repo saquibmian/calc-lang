@@ -1,5 +1,5 @@
 namespace CalcLang.CodeAnalysis {
-    internal class SyntaxToken {
+    internal sealed class SyntaxToken {
         public SyntaxToken( SyntaxKind kind, int position, string text, object value ) {
             Kind = kind;
             Position = position;
