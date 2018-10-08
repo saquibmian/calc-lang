@@ -54,6 +54,17 @@ namespace CalcLang.CodeAnalysis {
         }
 
         private StatementSyntax ParseStatement() {
+            if ( Current.Kind == SyntaxKind.IdentiferToken ) {
+                switch ( Current.Value ) {
+                    case "let":
+                        var letToken = Expect( SyntaxKind.IdentiferToken );
+                        var varName = Expect( SyntaxKind.IdentiferToken );
+                        var equalsToken = Expect( SyntaxKind.EqualsToken );
+                        var varValue = ParseTerm();
+                        return new LocalDeclarationStatementSyntax( letToken, varName, equalsToken, varValue );
+                }
+            }
+
             var expression = ParseTerm();
             return new ExpressionStatementSyntax( expression );
         }

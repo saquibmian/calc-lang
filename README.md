@@ -18,13 +18,13 @@ function addAll(all: ...Int32): Int32 {
 1 + ( foo(10, 11) + 11 ) * addAll(1, 2, 3, 4)
 ```
 
-
 ## progress
 
 - [x] parse identifiers
 - [x] parse numeric expression
 - [x] parse expressions calling builtin functions
 - [x] parse member access expressions
+- [x] support variables 
 - [ ] support doubles
 - [ ] make it non-numerical
 - [ ] make evaluator return errors

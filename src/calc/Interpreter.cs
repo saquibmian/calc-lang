@@ -7,6 +7,7 @@ namespace CalcLang {
     internal sealed class Interpreter {
 
         private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
+        private readonly Runtime _runtime = new Runtime();
 
         private bool _printTree;
         private bool _done;
@@ -60,8 +61,10 @@ namespace CalcLang {
                 }
             }
 
-            var result = _evaluator.Evaluate( tree.Root );
-            Console.WriteLine( $"{result}" );
+            var result = _evaluator.Evaluate( tree.Root, _runtime );
+            if ( result.HasValue ) {
+                Console.WriteLine( $"{result}" );
+            }
         }
 
         private void HandleShowTree() {

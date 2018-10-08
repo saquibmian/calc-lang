@@ -21,6 +21,8 @@ namespace CalcLang.CodeAnalysis {
         ArgumentList,
         SeparatedSyntaxList,
         Argument,
-        MemberAccessExpression
+        MemberAccessExpression,
+        EqualsToken,
+        LocalDeclarationStatement
     }
 }

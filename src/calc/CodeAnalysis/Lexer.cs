@@ -62,6 +62,9 @@ namespace CalcLang.CodeAnalysis {
                 case ',':
                     Next();
                     return new SyntaxToken( SyntaxKind.CommaToken, start, ",", null );
+                case '=':
+                    Next();
+                    return new SyntaxToken( SyntaxKind.EqualsToken, start, "=", null );
 
                 // whitespace
                 case var ws when char.IsWhiteSpace( ws ):
