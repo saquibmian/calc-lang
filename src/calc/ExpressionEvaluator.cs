@@ -55,9 +55,9 @@ namespace CalcLang {
                 .ToArray();
             var argTypes = args.Select( a => a.GetType() ).ToArray();
 
-            var method = runtime.GetMethod( (string)i.Identifer.Value, argTypes );
+            var method = runtime.GetMethod( (string)i.Member.MemberName.Value, argTypes );
             if ( method == null ) {
-                throw new Exception( $"Unknown function '{i.Identifer.Value}'" );
+                throw new Exception( $"Unknown function '{i.Member.MemberName.Value}'" );
             }
 
             if ( i.ArgumentList.Arguments.Nodes.Count() > method.Parameters.Length ) {

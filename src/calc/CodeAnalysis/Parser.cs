@@ -99,11 +99,12 @@ namespace CalcLang.CodeAnalysis {
         private ExpressionSyntax ParsePrimaryExpression() {
             if ( Current.Kind == SyntaxKind.IdentiferToken ) {
                 var memberName = Expect( SyntaxKind.IdentiferToken );
-                if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
-                    var arguments = ParseArgumentList();
-                    return new InvocationExpressionSyntax( memberName, arguments );
+                var memberAccess = new MemberAccessExpressionSyntax( memberName );
+                if ( Current.Kind != SyntaxKind.OpenParenthesisToken ) {
+                    return memberAccess;
                 }
-                return new MemberAccessExpressionSyntax( memberName );
+                var arguments = ParseArgumentList();
+                return new InvocationExpressionSyntax( memberAccess, arguments );
             }
 
             if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
