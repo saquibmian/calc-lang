@@ -23,6 +23,8 @@ namespace CalcLang.CodeAnalysis {
         Argument,
         MemberAccessExpression,
         EqualsToken,
-        LocalDeclarationStatement
+        LocalDeclarationStatement,
+        FloatLiteralExpression,
+        FloatToken
     }
 }

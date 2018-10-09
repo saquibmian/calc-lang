@@ -77,10 +77,19 @@ namespace CalcLang.CodeAnalysis {
                 // numbers
                 case var digit when char.IsDigit( digit ):
                     var toParse = ReadNumber();
-                    if ( !int.TryParse( toParse, out var integer ) ) {
-                        _diagnostics.Add( new Diagnostic( start, $"Expected Int32, but found '{toParse}'" ) );
+                    if ( Current.Character == '.' ) {
+                        Next();
+                        toParse = toParse + "." + ReadNumber();
+                        if ( !float.TryParse( toParse, out var parsedFloat ) ) {
+                            _diagnostics.Add( new Diagnostic( start, $"Expected Float32, but found '{toParse}'" ) );
+                        }
+                        return new SyntaxToken( SyntaxKind.FloatToken, start, toParse, parsedFloat );
+                    } else {
+                        if ( !int.TryParse( toParse, out var parsedInteger ) ) {
+                            _diagnostics.Add( new Diagnostic( start, $"Expected Int32, but found '{toParse}'" ) );
+                        }
+                        return new SyntaxToken( SyntaxKind.IntegerToken, start, toParse, parsedInteger );
                     }
-                    return new SyntaxToken( SyntaxKind.IntegerToken, start, toParse, integer );
 
                 // words
                 case var letter when char.IsLetter( letter ) || letter == '_':
@@ -98,7 +107,7 @@ namespace CalcLang.CodeAnalysis {
 
         private string ReadIdentifier() {
             var start = Current.Position;
-            while ( char.IsLetterOrDigit( Current.Character )  || Current.Character == '_' ) {
+            while ( char.IsLetterOrDigit( Current.Character ) || Current.Character == '_' ) {
                 Next();
             }
             return _input.Substring( start, Current.Position - start );
@@ -106,7 +115,7 @@ namespace CalcLang.CodeAnalysis {
 
         private string ReadNumber() {
             var start = Current.Position;
-            while ( char.IsDigit( Current.Character )  || Current.Character == '.' ) {
+            while ( char.IsDigit( Current.Character ) ) {
                 Next();
             }
             return _input.Substring( start, Current.Position - start );

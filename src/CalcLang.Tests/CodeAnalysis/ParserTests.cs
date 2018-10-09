@@ -14,13 +14,13 @@ namespace CalcLang.CodeAnalysis {
         }
 
         [Theory]
-        [InlineData( "1234.0" )]
-        [InlineData( "123422222.0" )]
+        [InlineData( "1234.1" )]
+        [InlineData( "123422222.1" )]
         public void Float__Valid__ParsesFloatExpression( string input ) {
             var result = ParseExpression( input );
 
-            var number = Assert.IsType<IntegerLiteralExpressionSyntax>( result.Expression );
-            Assert.Equal( double.Parse( input ), number.NumberToken.Value );
+            var number = Assert.IsType<FloatLiteralExpressionSyntax>( result.Expression );
+            Assert.Equal( float.Parse( input ), number.NumberToken.Value );
         }
 
         [Theory]

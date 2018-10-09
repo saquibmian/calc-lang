@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -112,8 +113,18 @@ namespace CalcLang.CodeAnalysis {
                 return new ParenthetizedExpressionSyntax( open, expression, close );
             }
 
-            var token = Expect( SyntaxKind.IntegerToken );
-            return new IntegerLiteralExpressionSyntax( token );
+            if ( Current.Kind == SyntaxKind.IntegerToken ) {
+                var token = Expect( SyntaxKind.IntegerToken );
+                return new IntegerLiteralExpressionSyntax( token );
+
+            }
+
+            if ( Current.Kind == SyntaxKind.FloatToken ) {
+                var token = Expect( SyntaxKind.FloatToken );
+                return new FloatLiteralExpressionSyntax( token );
+            }
+
+            throw new Exception( $"Unhandled primary expression kind: {Current.Kind}" );
         }
 
         private ArgumentListSyntax ParseArgumentList() {

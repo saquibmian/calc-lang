@@ -26,7 +26,7 @@ function addAll(all: ...Int32): Int32 {
 - [x] parse member access expressions
 - [x] support variables
 - [x] support errors in the interpreter
-- [ ] support doubles
+- [x] support doubles
 - [ ] support vararg method
 - [ ] make it non-numerical
 - [ ] make evaluator return errors
