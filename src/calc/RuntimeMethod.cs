@@ -3,11 +3,11 @@ using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 namespace CalcLang {
-    internal abstract class RuntimeMethod {
-        internal abstract string Name { get; }
-        internal abstract ImmutableArray<Parameter> Parameters { get; }
-        internal abstract Type ReturnType { get; }
-        internal abstract object Execute( Runtime runtime );
+    public abstract class RuntimeMethod {
+        public abstract string Name { get; }
+        public abstract ImmutableArray<Parameter> Parameters { get; }
+        public abstract Type ReturnType { get; }
+        public abstract object Execute( Runtime runtime );
 
         [MethodImpl( MethodImplOptions.AggressiveInlining )]
         private object GetArgument( Runtime runtime, Parameter p ) {

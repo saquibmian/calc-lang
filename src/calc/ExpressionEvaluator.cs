@@ -4,12 +4,15 @@ using System.Linq;
 using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
-    internal sealed class ExpressionEvaluator {
+    public sealed class ExpressionEvaluator {
 
-        internal object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
+        public object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
             switch ( expression ) {
                 case IntegerLiteralExpressionSyntax n:
-                    return (int)n.NumberToken.Value;
+                    return n.NumberToken.Value;
+
+                case FloatLiteralExpressionSyntax f:
+                    return f.NumberToken.Value;
 
                 case BinaryExpressionSyntax b:
                     return Evaluate( b, runtime );
