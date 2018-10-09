@@ -49,20 +49,18 @@ namespace CalcLang.CodeAnalysis {
 
         [Fact]
         public void Invocation__Valid__ParsesInvocationExpression() {
-            const string input = "foo(1, 2, 2.5, _bar)";
+            const string input = "foo()";
 
             var expr = ParseExpression<InvocationExpressionSyntax>( input );
 
             Assert.Equal( "foo", expr.Member.MemberName.Value );
             var args = expr.ArgumentList.Arguments.Nodes.ToArray();
-            Assert.Equal( 4, args.Length );
-            var firstArg = Assert.IsType<IntegerLiteralExpressionSyntax>( args[0].Expression );
-            Assert.Equal( 1, firstArg.NumberToken.Value );
+            Assert.Equal( 0, args.Length );
         }
 
         [Fact]
         public void Invocation__Valid__ParsesArgumentsCorrectly() {
-            const string input = "foo(1, 2, 2.5, _bar)";
+            const string input = "foo(1, 2, 2.5, _bar, (1+2 ) )";
 
             var expr = ParseExpression<InvocationExpressionSyntax>( input );
 
@@ -75,6 +73,8 @@ namespace CalcLang.CodeAnalysis {
             Assert.Equal( 2.5f, thirdArg.NumberToken.Value );
             var fourthArg = Assert.IsType<MemberAccessExpressionSyntax>( args[3].Expression );
             Assert.Equal( "_bar", fourthArg.MemberName.Value );
+            var fifthArg = Assert.IsType<ParenthetizedExpressionSyntax>( args[4].Expression );
+            var fifthArgExpression = Assert.IsType<BinaryExpressionSyntax>( fifthArg.Expression );
         }
 
         [Fact]
