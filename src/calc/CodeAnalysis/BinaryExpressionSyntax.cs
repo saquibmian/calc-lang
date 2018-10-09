@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class BinaryExpressionSyntax : ExpressionSyntax {
-        public BinaryExpressionSyntax( ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right ) {
+    public sealed class BinaryExpressionSyntax : ExpressionSyntax {
+        internal BinaryExpressionSyntax( ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right ) {
             Left = left;
             OperatorToken = operatorToken;
             Right = right;
@@ -12,9 +12,9 @@ namespace CalcLang.CodeAnalysis {
         public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Right { get; }
 
-        internal override SyntaxKind Kind => SyntaxKind.BinaryExpression;
+        public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             yield return Left;
             yield return Right;
         }

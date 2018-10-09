@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class NumberExpressionSyntax : ExpressionSyntax {
-        public NumberExpressionSyntax( SyntaxToken numberToken ) {
+    public sealed class NumberExpressionSyntax : ExpressionSyntax {
+        internal NumberExpressionSyntax( SyntaxToken numberToken ) {
             NumberToken = numberToken;
         }
 
         public SyntaxToken NumberToken { get; }
 
-        internal override SyntaxKind Kind => SyntaxKind.NumberExpression;
+        public override SyntaxKind Kind => SyntaxKind.NumberExpression;
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             yield break;
         }
 

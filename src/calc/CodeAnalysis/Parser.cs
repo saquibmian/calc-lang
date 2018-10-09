@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CalcLang.CodeAnalysis {
 
-    internal sealed class Parser {
+    public sealed class Parser {
 
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
         private readonly ImmutableArray<SyntaxToken> _tokens;
@@ -17,7 +17,7 @@ namespace CalcLang.CodeAnalysis {
             _diagnostics.AddRange( lexer.Diagnostics );
         }
 
-        internal static SyntaxTree Parse( string input ) {
+        public static SyntaxTree Parse( string input ) {
             var parser = new Parser( input );
             return parser.ParseSyntaxTree();
         }

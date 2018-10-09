@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    internal class MemberAccessExpressionSyntax : ExpressionSyntax {
+    public class MemberAccessExpressionSyntax : ExpressionSyntax {
 
-        public MemberAccessExpressionSyntax( SyntaxToken memberName ) {
+        internal MemberAccessExpressionSyntax( SyntaxToken memberName ) {
             MemberName = memberName;
         }
 
-        internal override SyntaxKind Kind => SyntaxKind.MemberAccessExpression;
+        public override SyntaxKind Kind => SyntaxKind.MemberAccessExpression;
 
-        internal SyntaxToken MemberName { get; }
+        public SyntaxToken MemberName { get; }
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             yield break;
         }
 

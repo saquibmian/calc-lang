@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class ParenthetizedExpressionSyntax : ExpressionSyntax {
+    public sealed class ParenthetizedExpressionSyntax : ExpressionSyntax {
         internal ParenthetizedExpressionSyntax( SyntaxToken openParenthesis, ExpressionSyntax expression, SyntaxToken closeParenthesis ) {
             Expression = expression;
         }
 
-        internal ExpressionSyntax Expression { get; }
+        public ExpressionSyntax Expression { get; }
 
-        internal override SyntaxKind Kind => SyntaxKind.ParenthetizedExpression;
+        public override SyntaxKind Kind => SyntaxKind.ParenthetizedExpression;
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             yield return Expression;
         }
 

@@ -1,8 +1,8 @@
 using System;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class Diagnostic {
-        public Diagnostic(int position, string message) {
+    public sealed class Diagnostic {
+        internal Diagnostic(int position, string message) {
             if ( string.IsNullOrWhiteSpace( message ) ) {
                 throw new ArgumentException( "message", nameof( message ) );
             }

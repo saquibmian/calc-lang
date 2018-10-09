@@ -1,3 +1,3 @@
 namespace CalcLang.CodeAnalysis {
-    internal abstract class StatementSyntax : SyntaxNode { }
+    public abstract class StatementSyntax : SyntaxNode { }
 }

@@ -3,18 +3,18 @@ using System.Linq;
 using System.Text;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class SeparatedSyntaxList<T> : SyntaxNode where T : SyntaxNode {
+    public sealed class SeparatedSyntaxList<T> : SyntaxNode where T : SyntaxNode {
         internal SeparatedSyntaxList( IEnumerable<T> nodes, IEnumerable<SyntaxToken> separators ) {
             Nodes = nodes;
             Separators = separators;
         }
 
-        internal IEnumerable<T> Nodes { get; }
-        internal IEnumerable<SyntaxToken> Separators { get; }
+        public IEnumerable<T> Nodes { get; }
+        public IEnumerable<SyntaxToken> Separators { get; }
 
-        internal override SyntaxKind Kind => SyntaxKind.SeparatedSyntaxList;
+        public override SyntaxKind Kind => SyntaxKind.SeparatedSyntaxList;
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             return Nodes;
         }
 

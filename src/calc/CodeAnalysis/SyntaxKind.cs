@@ -1,5 +1,5 @@
 namespace CalcLang.CodeAnalysis {
-    enum SyntaxKind {
+    public enum SyntaxKind {
         IntegerToken,
         EndOfFileToken,
         WhiteSpaceToken,

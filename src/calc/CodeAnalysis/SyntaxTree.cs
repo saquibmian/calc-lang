@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class SyntaxTree {
-        public SyntaxTree( StatementSyntax root, SyntaxToken endOfFileToken, ImmutableArray<Diagnostic> diagnostics ) {
+    public sealed class SyntaxTree {
+        internal SyntaxTree( StatementSyntax root, SyntaxToken endOfFileToken, ImmutableArray<Diagnostic> diagnostics ) {
             Root = root;
             Diagnostics = diagnostics;
         }

@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class InvocationExpressionSyntax : ExpressionSyntax {
+    public sealed class InvocationExpressionSyntax : ExpressionSyntax {
         internal InvocationExpressionSyntax( SyntaxToken identifer, ArgumentListSyntax argumentList ) {
             Identifer = identifer;
             ArgumentList = argumentList;
         }
 
-        internal SyntaxToken Identifer { get; }
-        internal ArgumentListSyntax ArgumentList { get; }
+        public SyntaxToken Identifer { get; }
+        public ArgumentListSyntax ArgumentList { get; }
 
-        internal override SyntaxKind Kind => SyntaxKind.InvocationExpression;
+        public override SyntaxKind Kind => SyntaxKind.InvocationExpression;
 
-        internal override IEnumerable<SyntaxNode> ChildNodes() {
+        public override IEnumerable<SyntaxNode> ChildNodes() {
             yield return ArgumentList;
         }
 
