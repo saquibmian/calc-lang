@@ -9,18 +9,18 @@ namespace CalcLang.CodeAnalysis {
         public void Integer__Valid__ParsesNumberExpression( string input ) {
             var result = ParseExpression( input );
 
-            var number = Assert.IsType<NumberExpressionSyntax>( result.Expression );
+            var number = Assert.IsType<IntegerLiteralExpressionSyntax>( result.Expression );
             Assert.Equal( int.Parse( input ), number.NumberToken.Value );
         }
 
         [Theory]
-        [InlineData( "1234" )]
-        [InlineData( "123422222" )]
+        [InlineData( "1234.0" )]
+        [InlineData( "123422222.0" )]
         public void Float__Valid__ParsesFloatExpression( string input ) {
             var result = ParseExpression( input );
 
-            var number = Assert.IsType<NumberExpressionSyntax>( result.Expression );
-            Assert.Equal( int.Parse( input ), number.NumberToken.Value );
+            var number = Assert.IsType<IntegerLiteralExpressionSyntax>( result.Expression );
+            Assert.Equal( double.Parse( input ), number.NumberToken.Value );
         }
 
         [Theory]

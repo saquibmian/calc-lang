@@ -8,7 +8,7 @@ namespace CalcLang {
 
         internal object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
             switch ( expression ) {
-                case NumberExpressionSyntax n:
+                case IntegerLiteralExpressionSyntax n:
                     return (int)n.NumberToken.Value;
 
                 case BinaryExpressionSyntax b:

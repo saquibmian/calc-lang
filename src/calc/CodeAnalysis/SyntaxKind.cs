@@ -13,7 +13,7 @@ namespace CalcLang.CodeAnalysis {
         BadToken,
         CommaToken,
 
-        NumberExpression,
+        IntegerLiteralExpression,
         ExpressionStatement,
         BinaryExpression,
         ParenthetizedExpression,

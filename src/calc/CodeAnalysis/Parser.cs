@@ -113,7 +113,7 @@ namespace CalcLang.CodeAnalysis {
             }
 
             var token = Expect( SyntaxKind.IntegerToken );
-            return new NumberExpressionSyntax( token );
+            return new IntegerLiteralExpressionSyntax( token );
         }
 
         private ArgumentListSyntax ParseArgumentList() {
