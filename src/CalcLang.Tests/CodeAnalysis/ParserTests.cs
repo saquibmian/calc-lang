@@ -77,9 +77,24 @@ namespace CalcLang.CodeAnalysis {
             Assert.Equal( "_bar", fourthArg.MemberName.Value );
         }
 
-        private T ParseExpression<T>( string input ) where T : ExpressionSyntax {
+        [Fact]
+        public void LocalDeclaration__Valid__ParsesLocalDeclarationCorrectly() {
+            const string input = "let x = 1 + 2";
+
+            var statement = ParseStatement<LocalDeclarationStatementSyntax>( input );
+
+            Assert.Equal( "x", statement.NameToken.Value );
+            Assert.IsType<BinaryExpressionSyntax>( statement.Expression );
+        }
+
+        private T ParseStatement<T>( string input ) where T : StatementSyntax {
             var tree = Parser.Parse( input );
-            var expr = Assert.IsType<ExpressionStatementSyntax>( tree.Root );
+            var expr = Assert.IsType<T>( tree.Root );
+            return expr;
+        }
+
+        private T ParseExpression<T>( string input ) where T : ExpressionSyntax {
+            var expr = ParseStatement<ExpressionStatementSyntax>( input );
             return Assert.IsType<T>( expr.Expression );
         }
 
