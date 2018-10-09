@@ -4,121 +4,137 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace CalcLang.CodeAnalysis {
-    internal sealed class Lexer {
-        private readonly string _input;
+    public sealed class Lexer {
+        private readonly SlidingTextWindow _window;
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
 
         private int _position = 0;
 
-        internal Lexer( string input ) {
-            _input = input ?? throw new System.ArgumentNullException( nameof( input ) );
+        public Lexer( string input ) {
+            _window = new SlidingTextWindow( input ?? throw new System.ArgumentNullException( nameof( input ) ) );
         }
 
-        internal IEnumerable<Diagnostic> Diagnostics => _diagnostics;
+        public IEnumerable<Diagnostic> Diagnostics => _diagnostics;
 
-        internal SyntaxToken Read() {
-            return ReadNextToken();
-        }
+        public SyntaxToken Read() {
+            _window.Start();
 
-        private (int Position, char Character) Current {
-            get {
-                if ( _position >= _input.Length ) {
-                    return (_input.Length, '\0');
-                }
-                return (_position, _input[_position]);
-            }
-        }
-
-        private void Next() => ++_position;
-
-        private SyntaxToken ReadNextToken() {
-            var start = Current.Position;
-
-            switch ( Current.Character ) {
+            switch ( _window.Peek() ) {
 
                 // end of file
                 case '\0':
-                    return new SyntaxToken( SyntaxKind.EndOfFileToken, start, "\0", null );
+                    return new SyntaxToken( SyntaxKind.EndOfFileToken, _window.WindowStart, "\0", null );
 
                 // one-character tokens
                 case '+':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.PlusToken, start, "+", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.PlusToken, _window.WindowStart, "+", null );
                 case '-':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.MinusToken, start, "-", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.MinusToken, _window.WindowStart, "-", null );
                 case '/':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.ForwardSlashToken, start, "/", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.ForwardSlashToken, _window.WindowStart, "/", null );
                 case '*':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.StarToken, start, "*", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.StarToken, _window.WindowStart, "*", null );
                 case '(':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.OpenParenthesisToken, start, "(", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.OpenParenthesisToken, _window.WindowStart, "(", null );
                 case ')':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.CloseParenthesisToken, start, ")", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.CloseParenthesisToken, _window.WindowStart, ")", null );
                 case ',':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.CommaToken, start, ",", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.CommaToken, _window.WindowStart, ",", null );
                 case '=':
-                    Next();
-                    return new SyntaxToken( SyntaxKind.EqualsToken, start, "=", null );
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.EqualsToken, _window.WindowStart, "=", null );
+
+                // numbers
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    return LexNumber();
 
                 // whitespace
                 case var ws when char.IsWhiteSpace( ws ):
-                    while ( char.IsWhiteSpace( Current.Character ) ) {
-                        Next();
+                    while ( char.IsWhiteSpace( _window.Peek() ) ) {
+                        _window.Next();
                     }
-                    var whitespace = _input.Substring( start, Current.Position - start );
-                    return new SyntaxToken( SyntaxKind.WhiteSpaceToken, start, whitespace, null );
-
-                // numbers
-                case var digit when char.IsDigit( digit ):
-                    var toParse = ReadNumber();
-                    if ( Current.Character == '.' ) {
-                        Next();
-                        toParse = toParse + "." + ReadNumber();
-                        if ( !float.TryParse( toParse, out var parsedFloat ) ) {
-                            _diagnostics.Add( new Diagnostic( start, $"Expected Float32, but found '{toParse}'" ) );
-                        }
-                        return new SyntaxToken( SyntaxKind.FloatToken, start, toParse, parsedFloat );
-                    } else {
-                        if ( !int.TryParse( toParse, out var parsedInteger ) ) {
-                            _diagnostics.Add( new Diagnostic( start, $"Expected Int32, but found '{toParse}'" ) );
-                        }
-                        return new SyntaxToken( SyntaxKind.IntegerToken, start, toParse, parsedInteger );
-                    }
+                    var whitespace = _window.Value;
+                    return new SyntaxToken( SyntaxKind.WhiteSpaceToken, _window.WindowStart, whitespace, null );
 
                 // words
                 case var letter when char.IsLetter( letter ) || letter == '_':
                     var identifer = ReadIdentifier();
-                    return new SyntaxToken( SyntaxKind.IdentiferToken, start, identifer, identifer );
+                    return new SyntaxToken( SyntaxKind.IdentiferToken, _window.WindowStart, identifer, identifer );
 
                 // bad token
                 default:
                     var badToken = ReadIdentifier();
-                    _diagnostics.Add( new Diagnostic( start, $"invalid token: '{badToken}'" ) );
-                    return new SyntaxToken( SyntaxKind.BadToken, start, badToken, null );
+                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"invalid token: '{badToken}'" ) );
+                    return new SyntaxToken( SyntaxKind.BadToken, _window.WindowStart, badToken, null );
 
+            }
+        }
+
+        private SyntaxToken LexNumber() {
+            while ( char.IsDigit( _window.Peek() ) ) {
+                _window.Next();
+            }
+
+            float parsedFloat;
+            switch(_window.Peek()) {
+                case 'f':
+                    _window.Next();
+                    if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out parsedFloat ) ) {
+                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
+                    }
+                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, parsedFloat );
+
+                case '.':
+                    _window.Next();
+                    while ( char.IsDigit( _window.Peek() ) ) {
+                        _window.Next();
+                    }
+                    if ( !float.TryParse( _window.Value, out parsedFloat ) ) {
+                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
+                    }
+                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, parsedFloat );
+
+                case var letter when char.IsLetter( letter ):
+                    _window.Next();
+                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
+                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, null );
+
+                default:
+                    if ( !int.TryParse( _window.Value, out var parsedInteger ) ) {
+                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
+                    }
+                    return new SyntaxToken( SyntaxKind.IntegerToken, _window.WindowStart, _window.Value, parsedInteger );
             }
         }
 
         private string ReadIdentifier() {
-            var start = Current.Position;
-            while ( char.IsLetterOrDigit( Current.Character ) || Current.Character == '_' ) {
-                Next();
+            while ( char.IsLetterOrDigit( _window.Peek() ) || _window.Peek() == '_' ) {
+                _window.Next();
             }
-            return _input.Substring( start, Current.Position - start );
+            return _window.Value;
         }
 
         private string ReadNumber() {
-            var start = Current.Position;
-            while ( char.IsDigit( Current.Character ) ) {
-                Next();
+            while ( char.IsDigit( _window.Peek() ) ) {
+                _window.Next();
             }
-            return _input.Substring( start, Current.Position - start );
+            return _window.Value;
         }
 
     }

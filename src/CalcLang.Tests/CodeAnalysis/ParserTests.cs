@@ -3,10 +3,10 @@
 namespace CalcLang.CodeAnalysis {
     public sealed class ParserTests {
 
-        [Theory]
-        [InlineData( "1234" )]
-        [InlineData( "123422222" )]
-        public void Integer__Valid__ParsesNumberExpression( string input ) {
+        [Fact]
+        public void Integer__Valid__ParsesNumberExpression() {
+            const string input = "1234";
+
             var result = ParseExpression( input );
 
             var number = Assert.IsType<IntegerLiteralExpressionSyntax>( result.Expression );
@@ -15,12 +15,12 @@ namespace CalcLang.CodeAnalysis {
 
         [Theory]
         [InlineData( "1234.1" )]
-        [InlineData( "123422222.1" )]
+        [InlineData( "1234f" )]
         public void Float__Valid__ParsesFloatExpression( string input ) {
             var result = ParseExpression( input );
 
             var number = Assert.IsType<FloatLiteralExpressionSyntax>( result.Expression );
-            Assert.Equal( float.Parse( input ), number.NumberToken.Value );
+            Assert.Equal( float.Parse( input.TrimEnd( 'f' ) ), number.NumberToken.Value );
         }
 
         [Theory]
