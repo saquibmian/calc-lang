@@ -6,20 +6,7 @@ using CalcLang.CodeAnalysis;
 namespace CalcLang {
     internal sealed class ExpressionEvaluator {
 
-        internal object Evaluate( StatementSyntax statement, Runtime runtime ) {
-            switch ( statement ) {
-                case ExpressionStatementSyntax e:
-                    return Evaluate( e.Expression, runtime );
-
-                case LocalDeclarationStatementSyntax l:
-                    return Evaluate( l, runtime );
-
-                default:
-                    throw new Exception( $"Unexpected expression {statement.Kind}" );
-            }
-        }
-
-        private object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
+        internal object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
             switch ( expression ) {
                 case NumberExpressionSyntax n:
                     return (int)n.NumberToken.Value;
@@ -92,12 +79,6 @@ namespace CalcLang {
             }
 
             throw new Exception( $"Unknown variable '{m.MemberName.Value}'" );
-        }
-
-        private object Evaluate( LocalDeclarationStatementSyntax local, Runtime runtime ) {
-            var value = Evaluate( local.Expression, runtime );
-            runtime.SetVariable( (string)local.NameToken.Value, value );
-            return null;
         }
 
     }

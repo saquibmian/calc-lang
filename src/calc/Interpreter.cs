@@ -5,8 +5,7 @@ using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
     internal sealed class Interpreter {
-
-        private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
+        private readonly VirtualMachine _vm = new VirtualMachine();
         private readonly Runtime _runtime = Runtime.Global.CreateScope();
 
         private bool _printTree;
@@ -62,7 +61,7 @@ namespace CalcLang {
             }
 
             try {
-                var result = _evaluator.Evaluate( tree.Root, _runtime );
+                var result = _vm.Run( tree.Root, _runtime );
                 Console.WriteLine( result );
             } catch ( Exception e ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
