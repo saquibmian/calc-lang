@@ -63,9 +63,7 @@ namespace CalcLang {
 
             try {
                 var result = _evaluator.Evaluate( tree.Root, _runtime );
-                if ( result.HasValue ) {
-                    Console.WriteLine( $"{result}" );
-                }
+                Console.WriteLine( result );
             } catch ( Exception e ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
                     Console.WriteLine( e.Message );

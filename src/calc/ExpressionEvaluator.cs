@@ -5,8 +5,8 @@ using CalcLang.CodeAnalysis;
 
 namespace CalcLang {
     internal sealed class ExpressionEvaluator {
-        
-        internal int? Evaluate( StatementSyntax statement, Runtime runtime ) {
+
+        internal object Evaluate( StatementSyntax statement, Runtime runtime ) {
             switch ( statement ) {
                 case ExpressionStatementSyntax e:
                     return Evaluate( e.Expression, runtime );
@@ -19,7 +19,7 @@ namespace CalcLang {
             }
         }
 
-        private int? Evaluate( ExpressionSyntax expression, Runtime runtime ) {
+        private object Evaluate( ExpressionSyntax expression, Runtime runtime ) {
             switch ( expression ) {
                 case NumberExpressionSyntax n:
                     return (int)n.NumberToken.Value;
@@ -41,42 +41,52 @@ namespace CalcLang {
             }
         }
 
-        private int? Evaluate( BinaryExpressionSyntax b, Runtime runtime ) {
+        private object Evaluate( BinaryExpressionSyntax b, Runtime runtime ) {
+            // TODO: find a way to determine the return type of the expression
             var left = Evaluate( b.Left, runtime );
             var right = Evaluate( b.Right, runtime );
+            var argTypes = new[] { left.GetType(), right.GetType() };
 
-            switch ( b.OperatorToken.Kind ) {
-                case SyntaxKind.PlusToken:
-                    return left + right;
-                case SyntaxKind.MinusToken:
-                    return left - right;
-                case SyntaxKind.StarToken:
-                    return left * right;
-                case SyntaxKind.ForwardSlashToken:
-                    return left / right;
-
-                default:
-                    throw new Exception( $"Unexpected binary operator {b.OperatorToken.Kind}" );
+            var method = runtime.GetMethod( b.OperatorToken.ValueText, argTypes ); ;
+            if ( method == null ) {
+                throw new Exception( $"Unknown operator" );
             }
+
+            // create a new scope with the args for the method
+            var scope = runtime.CreateScope();
+            // for operators, the args are always (lhs, rhs)
+            scope.SetVariable( "lhs", left );
+            scope.SetVariable( "rhs", right );
+
+            return method.Execute( scope );
         }
 
-        private int? Evaluate( InvocationExpressionSyntax i, Runtime runtime ) {
-            switch ( i.Identifer.Value ) {
-                case "sum":
-                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression, runtime ) ).Sum();
+        private object Evaluate( InvocationExpressionSyntax i, Runtime runtime ) {
+            // TODO: find a way to determine the return type of the expression
+            var args = i.ArgumentList.Arguments.Nodes
+                .Select( arg => Evaluate( arg.Expression, runtime ) )
+                .ToArray();
+            var argTypes = args.Select( a => a.GetType() ).ToArray();
 
-                case "min":
-                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression, runtime ) ).Min();
-
-                case "max":
-                    return i.ArgumentList.Arguments.Nodes.Select( arg => Evaluate( arg.Expression, runtime ) ).Max();
-
-                default:
-                    throw new Exception( $"Unknown function '{i.Identifer.Value}'" );
+            var method = runtime.GetMethod( (string)i.Identifer.Value, argTypes );
+            if ( method == null ) {
+                throw new Exception( $"Unknown function '{i.Identifer.Value}'" );
             }
+
+            if ( i.ArgumentList.Arguments.Nodes.Count() > method.Parameters.Length ) {
+                throw new Exception( "Too many arguments." );
+            }
+
+            // create a new scope with the args for the method
+            var scope = runtime.CreateScope();
+            for ( int idx = 0; idx < args.Length; ++idx ) {
+                scope.SetVariable( method.Parameters[idx].Name, args[idx] );
+            }
+
+            return method.Execute( scope );
         }
 
-        private int? Evaluate( MemberAccessExpressionSyntax m, Runtime runtime ) {
+        private object Evaluate( MemberAccessExpressionSyntax m, Runtime runtime ) {
             if ( runtime.TryGetVariableValue( (string)m.MemberName.Value, out var value ) ) {
                 return value;
             }
@@ -84,10 +94,11 @@ namespace CalcLang {
             throw new Exception( $"Unknown variable '{m.MemberName.Value}'" );
         }
 
-        private int? Evaluate( LocalDeclarationStatementSyntax local, Runtime runtime ) {
+        private object Evaluate( LocalDeclarationStatementSyntax local, Runtime runtime ) {
             var value = Evaluate( local.Expression, runtime );
-            runtime.SetVariable( (string)local.NameToken.Value, value.Value );
+            runtime.SetVariable( (string)local.NameToken.Value, value );
             return null;
         }
+
     }
 }

@@ -2,7 +2,7 @@
 
 A custom language!
 
-```
+```calc
 function foo(a: Int32, b: Int32): Int32 {
     a = a * 2
     return pow(a, b)
