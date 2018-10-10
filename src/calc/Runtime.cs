@@ -17,7 +17,7 @@ namespace CalcLang {
 
         private readonly Runtime _parent;
         private readonly Dictionary<string, object> _variablesByName = new Dictionary<string, object>();
-        private readonly List<RuntimeMethod> _methods = new List<RuntimeMethod>();
+        private readonly List<MethodSymbol> _methods = new List<MethodSymbol>();
 
         private Runtime( Runtime parent = null ) {
             _parent = parent;
@@ -47,7 +47,7 @@ namespace CalcLang {
             return false;
         }
 
-        public void AddMethod( RuntimeMethod method ) {
+        public void AddMethod( MethodSymbol method ) {
             var existing = GetMethod( method.Name, method.Parameters.Select( p => p.Type ).ToArray() );
             if ( existing != null ) {
                 throw new Exception( "Function already defined." );
@@ -56,7 +56,7 @@ namespace CalcLang {
             _methods.Add( method );
         }
 
-        public RuntimeMethod GetMethod( string name, Type[] parameterTypes ) {
+        public MethodSymbol GetMethod( string name, Type[] parameterTypes ) {
             var candidate = _methods.FirstOrDefault( m => {
                 return m.Name == name && parameterTypes.SequenceEqual( m.Parameters.Select( p => p.Type ) );
             } );

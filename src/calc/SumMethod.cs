@@ -2,10 +2,10 @@ using System;
 using System.Collections.Immutable;
 
 namespace CalcLang {
-    public sealed class SumMethod : RuntimeMethod {
+    public sealed class SumMethod : MethodSymbol {
         public override string Name => "sum";
 
-        public override ImmutableArray<Parameter> Parameters => ImmutableArray.Create<Parameter>(
+        public override ImmutableArray<ParameterSymbol> Parameters => ImmutableArray.Create<ParameterSymbol>(
             // TODO: varags
         );
 

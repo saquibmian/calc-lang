@@ -3,14 +3,14 @@ using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 namespace CalcLang {
-    public abstract class RuntimeMethod {
+    public abstract class MethodSymbol {
         public abstract string Name { get; }
-        public abstract ImmutableArray<Parameter> Parameters { get; }
+        public abstract ImmutableArray<ParameterSymbol> Parameters { get; }
         public abstract Type ReturnType { get; }
         public abstract object Execute( Runtime runtime );
 
         [MethodImpl( MethodImplOptions.AggressiveInlining )]
-        private object GetArgument( Runtime runtime, Parameter p ) {
+        private object GetArgument( Runtime runtime, ParameterSymbol p ) {
             if ( runtime.TryGetVariableValue( p.Name, out var arg ) ) {
                 return arg;
             }

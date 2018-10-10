@@ -1,8 +1,8 @@
 using System;
 
 namespace CalcLang {
-    public sealed class Parameter {
-        public Parameter( string name, Type type ) {
+    public sealed class ParameterSymbol {
+        public ParameterSymbol( string name, Type type ) {
             if ( string.IsNullOrWhiteSpace( name ) ) {
                 throw new ArgumentException( "message", nameof( name ) );
             }

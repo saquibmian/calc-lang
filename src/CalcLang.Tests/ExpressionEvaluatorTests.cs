@@ -76,11 +76,11 @@ namespace CalcLang {
             return Assert.IsType<T>( expr.Expression );
         }
 
-        private sealed class EchoMethod : RuntimeMethod {
+        private sealed class EchoMethod : MethodSymbol {
             public override string Name => "echo";
 
-            public override ImmutableArray<Parameter> Parameters => ImmutableArray.Create<Parameter>(
-                new Parameter( "input", typeof( int ) )
+            public override ImmutableArray<ParameterSymbol> Parameters => ImmutableArray.Create<ParameterSymbol>(
+                new ParameterSymbol( "input", typeof( int ) )
             );
 
             public override Type ReturnType => typeof( int );
