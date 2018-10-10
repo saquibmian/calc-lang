@@ -28,7 +28,7 @@ namespace CalcLang {
 
             var result = _evaluator.Evaluate( expr, _runtime );
 
-            Assert.Equal( 1.1, result );
+            Assert.Equal( 1.1f, result );
         }
 
         [Fact]

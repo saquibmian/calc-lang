@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace CalcLang.CodeAnalysis {
-    public sealed class IntegerLiteralExpressionSyntax : ExpressionSyntax {
+    public sealed class IntegerLiteralExpressionSyntax : ConstantExpressionSyntax {
         internal IntegerLiteralExpressionSyntax( SyntaxToken numberToken ) {
             NumberToken = numberToken;
         }
@@ -9,6 +9,8 @@ namespace CalcLang.CodeAnalysis {
         public SyntaxToken NumberToken { get; }
 
         public override SyntaxKind Kind => SyntaxKind.IntegerLiteralExpression;
+
+        public override object Value => NumberToken.Value;
 
         public override IEnumerable<SyntaxNode> ChildNodes() {
             yield break;
