@@ -14,7 +14,7 @@ namespace CalcLang.CodeAnalysis {
 
         public IEnumerable<Diagnostic> Diagnostics => _diagnostics;
 
-        public SyntaxToken Read() {
+        public SyntaxToken Lex() {
             _window.Start();
 
             switch ( _window.Peek() ) {

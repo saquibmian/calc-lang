@@ -8,7 +8,7 @@ namespace CalcLang.CodeAnalysis {
 
             SyntaxToken token;
             do {
-                token = lexer.Read();
+                token = lexer.Lex();
 
                 if ( token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadToken ) {
                     tokens.Add( token );
