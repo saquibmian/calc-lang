@@ -5,22 +5,17 @@ using System.Linq;
 
 namespace CalcLang.CodeAnalysis {
 
-    public sealed class Parser {
+    internal sealed class Parser {
 
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
         private readonly ImmutableArray<SyntaxToken> _tokens;
 
         private int _position;
 
-        private Parser( string input ) {
+        internal Parser( string input ) {
             var lexer = new Lexer( input );
             _tokens = lexer.ReadAllTokens();
             _diagnostics.AddRange( lexer.Diagnostics );
-        }
-
-        public static SyntaxTree Parse( string input ) {
-            var parser = new Parser( input );
-            return parser.ParseSyntaxTree();
         }
 
         private SyntaxToken Current {

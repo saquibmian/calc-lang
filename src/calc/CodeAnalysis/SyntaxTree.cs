@@ -9,5 +9,10 @@ namespace CalcLang.CodeAnalysis {
 
         public StatementSyntax Root { get; }
         public ImmutableArray<Diagnostic> Diagnostics { get; }
+
+        public static SyntaxTree Parse( string input ) {
+            var parser = new Parser( input );
+            return parser.ParseSyntaxTree();
+        }
     }
 }

@@ -54,8 +54,7 @@ namespace CalcLang.CodeAnalysis {
             var expr = ParseExpression<InvocationExpressionSyntax>( input );
 
             Assert.Equal( "foo", expr.Member.MemberName.Value );
-            var args = expr.ArgumentList.Arguments.Nodes.ToArray();
-            Assert.Equal( 0, args.Length );
+            Assert.Empty( expr.ArgumentList.Arguments.Nodes );
         }
 
         [Fact]
@@ -88,7 +87,7 @@ namespace CalcLang.CodeAnalysis {
         }
 
         private T ParseStatement<T>( string input ) where T : StatementSyntax {
-            var tree = Parser.Parse( input );
+            var tree = SyntaxTree.Parse( input );
             var expr = Assert.IsType<T>( tree.Root );
             return expr;
         }

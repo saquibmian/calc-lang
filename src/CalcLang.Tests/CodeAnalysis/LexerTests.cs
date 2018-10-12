@@ -11,7 +11,7 @@ namespace CalcLang.CodeAnalysis {
 
             Assert.Equal( expectedKind, result.Kind );
             Assert.Equal( input, result.ValueText );
-            Assert.Equal( null, result.Value );
+            Assert.Null( result.Value );
         }
 
         [Theory]
@@ -21,7 +21,7 @@ namespace CalcLang.CodeAnalysis {
 
             Assert.Equal( SyntaxKind.WhiteSpaceToken, result.Kind );
             Assert.Equal( input, result.ValueText );
-            Assert.Equal( null, result.Value );
+            Assert.Null( result.Value );
         }
 
         [Theory]
@@ -44,7 +44,7 @@ namespace CalcLang.CodeAnalysis {
 
             Assert.Equal( SyntaxKind.FloatToken, result.Kind );
             Assert.Equal( input, result.ValueText );
-            Assert.Equal( float.Parse( input.TrimEnd('f') ), result.Value );
+            Assert.Equal( float.Parse( input.TrimEnd( 'f' ) ), result.Value );
         }
 
         [Theory]
@@ -68,7 +68,7 @@ namespace CalcLang.CodeAnalysis {
 
             Assert.Equal( SyntaxKind.FloatToken, result.Kind );
             Assert.Equal( input, result.ValueText );
-            Assert.Equal( null, result.Value );
+            Assert.Null( result.Value );
         }
 
         private SyntaxToken LexSingle( string input, int errorCount = 0 ) {

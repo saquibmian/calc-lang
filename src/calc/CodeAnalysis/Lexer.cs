@@ -4,11 +4,9 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace CalcLang.CodeAnalysis {
-    public sealed class Lexer {
+    internal sealed class Lexer {
         private readonly SlidingTextWindow _window;
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
-
-        private int _position = 0;
 
         public Lexer( string input ) {
             _window = new SlidingTextWindow( input ?? throw new System.ArgumentNullException( nameof( input ) ) );

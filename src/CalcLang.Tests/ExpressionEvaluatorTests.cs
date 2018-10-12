@@ -71,7 +71,7 @@ namespace CalcLang {
         }
 
         private T Expression<T>( string input ) where T : ExpressionSyntax {
-            var tree = Parser.Parse( input );
+            var tree = SyntaxTree.Parse( input );
             var expr = Assert.IsType<ExpressionStatementSyntax>( tree.Root );
             return Assert.IsType<T>( expr.Expression );
         }

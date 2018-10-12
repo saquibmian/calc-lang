@@ -43,7 +43,7 @@ namespace CalcLang {
         }
 
         private void HandleStatementAsync( string statement ) {
-            var tree = Parser.Parse( statement );
+            var tree = SyntaxTree.Parse( statement );
 
             if ( _printTree ) {
                 using ( new OutputColor( foreground: ConsoleColor.DarkGreen ) ) {
