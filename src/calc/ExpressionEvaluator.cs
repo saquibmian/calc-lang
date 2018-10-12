@@ -14,6 +14,9 @@ namespace CalcLang {
                 case FloatLiteralExpressionSyntax f:
                     return f.NumberToken.Value;
 
+                case UnaryExpressionSyntax u:
+                    return Evaluate( u, runtime );
+
                 case BinaryExpressionSyntax b:
                     return Evaluate( b, runtime );
 
@@ -29,6 +32,25 @@ namespace CalcLang {
                 default:
                     throw new Exception( $"Unexpected expression {expression.Kind}" );
             }
+        }
+
+        private object Evaluate(UnaryExpressionSyntax u, Runtime runtime) {
+            // TODO: find a way to determine the return type of the expression
+            var expr = Evaluate( u.Expression, runtime );
+            var argTypes = new[] { expr.GetType(), expr.GetType() };
+
+            var method = runtime.GetMethod( u.Operand.ValueText, argTypes ); ;
+            if ( method == null ) {
+                throw new Exception( $"Unknown operator {u.Operand.ValueText}" );
+            }
+
+            // create a new scope with the args for the method
+            var scope = runtime.CreateScope();
+            // for operators, the args are always (lhs, rhs)
+            scope.SetVariable( "lhs", 0 );
+            scope.SetVariable( "rhs", expr );
+
+            return method.Execute( scope );
         }
 
         private object Evaluate( BinaryExpressionSyntax b, Runtime runtime ) {

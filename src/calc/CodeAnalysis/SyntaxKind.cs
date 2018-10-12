@@ -25,6 +25,7 @@ namespace CalcLang.CodeAnalysis {
         EqualsToken,
         LocalDeclarationStatement,
         FloatLiteralExpression,
-        FloatToken
+        FloatToken,
+        UnaryExpression
     }
 }

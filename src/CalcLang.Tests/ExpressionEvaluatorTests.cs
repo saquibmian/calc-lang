@@ -60,14 +60,20 @@ namespace CalcLang {
             Assert.Equal( 99, result );
         }
 
-        [Fact]
-        public void SomethingComplexBecauseImLazy() {
-            var expr = Expression<BinaryExpressionSyntax>( "1 + (echo((99+2+foo)) + foo)" );
+        [Theory]
+        [InlineData( "1 + (echo((99+2+foo)) + foo)", 1 + 99 + 2 + 100 + 100 )]
+        [InlineData( "+1", 1 )]
+        [InlineData( "-1", -1 )]
+        [InlineData( "-2 * 3", -2 * 3 )]
+        [InlineData( "-(2 * 3 + 1)", -( 2 * 3 + 1 ) )]
+        public void TestAllTheThings( string input, int expectedResult ) {
             _runtime.SetVariable( "foo", 100 );
+            var tree = SyntaxTree.Parse( input );
+            var expr = Assert.IsType<ExpressionStatementSyntax>( tree.Root );
 
-            var result = _evaluator.Evaluate( expr, _runtime );
+            var result = _evaluator.Evaluate( expr.Expression, _runtime );
 
-            Assert.Equal( ( 1 + 99 + 2 + 100 + 100 ), result );
+            Assert.Equal( expectedResult, result );
         }
 
         private T Expression<T>( string input ) where T : ExpressionSyntax {

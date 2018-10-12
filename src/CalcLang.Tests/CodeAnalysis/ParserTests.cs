@@ -47,6 +47,17 @@ namespace CalcLang.CodeAnalysis {
             Assert.Equal( 2, right.NumberToken.Value );
         }
 
+        [Theory]
+        [InlineData( "+1", SyntaxKind.PlusToken )]
+        [InlineData( "-1", SyntaxKind.MinusToken )]
+        public void Operator__Valid__ParsesUnaryExpression( string input, SyntaxKind operatorTokenKind ) {
+            var expr = ParseExpression<UnaryExpressionSyntax>( input );
+
+            Assert.Equal( operatorTokenKind, expr.Operand.Kind );
+            var left = Assert.IsType<IntegerLiteralExpressionSyntax>( expr.Expression );
+            Assert.Equal( 1, left.NumberToken.Value );
+        }
+
         [Fact]
         public void Invocation__Valid__ParsesInvocationExpression() {
             const string input = "foo()";

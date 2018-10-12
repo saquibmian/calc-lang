@@ -73,7 +73,7 @@ namespace CalcLang.CodeAnalysis {
 
         private SyntaxToken LexSingle( string input, int errorCount = 0 ) {
             var lexer = new Lexer( input );
-            var token = lexer.Read();
+            var token = lexer.Lex();
             Assert.Equal( errorCount, lexer.Diagnostics.Count() );
             return token;
         }

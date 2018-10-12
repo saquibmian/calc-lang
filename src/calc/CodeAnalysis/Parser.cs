@@ -56,36 +56,39 @@ namespace CalcLang.CodeAnalysis {
                         var letToken = Expect( SyntaxKind.IdentiferToken );
                         var varName = Expect( SyntaxKind.IdentiferToken );
                         var equalsToken = Expect( SyntaxKind.EqualsToken );
-                        var varValue = ParseTerm();
+                        var varValue = ParseExpression();
                         return new LocalDeclarationStatementSyntax( letToken, varName, equalsToken, varValue );
                 }
             }
 
-            var expression = ParseTerm();
+            var expression = ParseExpression();
             return new ExpressionStatementSyntax( expression );
         }
 
-        private ExpressionSyntax ParseTerm() {
-            var left = ParseFactor();
+        private ExpressionSyntax ParseExpression( int parentPrecendence = 0 ) {
+            ExpressionSyntax left;
 
-            while ( Current.Kind == SyntaxKind.PlusToken || Current.Kind == SyntaxKind.MinusToken ) {
-                var operatorToken = Current;
+            var unaryPrecendence = Current.GetUnaryOperatorPrecendence();
+            if ( unaryPrecendence != 0 && unaryPrecendence >= parentPrecendence ) {
+                var operand = Current;
                 MoveNext();
-                var right = ParseFactor();
-                left = new BinaryExpressionSyntax( left, operatorToken, right );
+                var expr = ParseExpression( unaryPrecendence );
+                left = new UnaryExpressionSyntax( operand, expr );
+            } else {
+                left = ParsePrimaryExpression();
             }
 
-            return left;
-        }
+            while ( true ) {
+                var currentPrecedence = Current.GetBinaryOperatorPrecendence();
+                if ( currentPrecedence <= parentPrecendence ) {
+                    // We don't bind as strongly as the parent, so let the parent parse it
+                    break;
+                }
 
-        private ExpressionSyntax ParseFactor() {
-            var left = ParsePrimaryExpression();
-
-            while ( Current.Kind == SyntaxKind.StarToken || Current.Kind == SyntaxKind.ForwardSlashToken ) {
-                var operatorToken = Current;
+                var operand = Current;
                 MoveNext();
-                var right = ParsePrimaryExpression();
-                left = new BinaryExpressionSyntax( left, operatorToken, right );
+                var right = ParseExpression( currentPrecedence );
+                left = new BinaryExpressionSyntax( left, operand, right );
             }
 
             return left;
@@ -104,7 +107,7 @@ namespace CalcLang.CodeAnalysis {
 
             if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
                 var open = Expect( SyntaxKind.OpenParenthesisToken );
-                var expression = ParseTerm();
+                var expression = ParseExpression();
                 var close = Expect( SyntaxKind.CloseParenthesisToken );
                 return new ParenthetizedExpressionSyntax( open, expression, close );
             }
@@ -147,7 +150,7 @@ namespace CalcLang.CodeAnalysis {
         }
 
         private ArgumentSyntax ParseArgument() {
-            var expression = ParseTerm();
+            var expression = ParseExpression();
             return new ArgumentSyntax( expression );
         }
 
