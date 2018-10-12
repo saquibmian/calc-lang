@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class BinaryExpressionSyntax : ExpressionSyntax {
         internal BinaryExpressionSyntax( ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right ) {
             Left = left;

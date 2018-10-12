@@ -1,5 +1,6 @@
 using System;
 using CalcLang.CodeAnalysis;
+using CalcLang.CodeAnalysis.Syntax;
 
 namespace CalcLang {
     public sealed class ParameterSymbol {

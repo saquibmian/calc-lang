@@ -1,4 +1,4 @@
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public enum SyntaxKind {
         IntegerToken,
         EndOfFileToken,

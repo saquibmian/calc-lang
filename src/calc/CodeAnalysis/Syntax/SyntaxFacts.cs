@@ -1,4 +1,4 @@
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public static class SyntaxFacts {
 
         public static int GetUnaryOperatorPrecendence( this SyntaxToken token ) {

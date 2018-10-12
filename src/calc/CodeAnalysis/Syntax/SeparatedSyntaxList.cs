@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class SeparatedSyntaxList<T> : SyntaxNode where T : SyntaxNode {
         internal SeparatedSyntaxList( IEnumerable<T> nodes, IEnumerable<SyntaxToken> separators ) {
             Nodes = nodes;

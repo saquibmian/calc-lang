@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     internal sealed class Lexer {
         private readonly SlidingTextWindow _window;
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();

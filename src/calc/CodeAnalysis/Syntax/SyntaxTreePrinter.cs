@@ -1,7 +1,7 @@
 using System.IO;
 using System.Linq;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     internal sealed class SyntaxTreePrinter {
 
         private readonly StringWriter writer = new StringWriter();

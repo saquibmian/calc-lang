@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class LocalDeclarationStatementSyntax : StatementSyntax {
         internal LocalDeclarationStatementSyntax(SyntaxToken letToken, SyntaxToken nameToken, SyntaxToken equalsToken, ExpressionSyntax expression) {
             NameToken = nameToken;

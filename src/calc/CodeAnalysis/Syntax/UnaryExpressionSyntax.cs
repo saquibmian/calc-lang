@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class UnaryExpressionSyntax : ExpressionSyntax {
         public UnaryExpressionSyntax( SyntaxToken operand, ExpressionSyntax expression ) {
             Operand = operand;

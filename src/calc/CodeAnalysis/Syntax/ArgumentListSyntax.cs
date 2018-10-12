@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class ArgumentListSyntax : SyntaxNode {
         internal ArgumentListSyntax( SyntaxToken openParenthesisToken, SeparatedSyntaxList<ArgumentSyntax> arguments, SyntaxToken closeParenthesisToken ) {
             Arguments = arguments;

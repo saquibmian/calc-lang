@@ -1,4 +1,4 @@
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class SyntaxToken {
         internal SyntaxToken( SyntaxKind kind, int position, string text, object value ) {
             Kind = kind;

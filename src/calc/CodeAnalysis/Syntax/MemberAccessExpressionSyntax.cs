@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public class MemberAccessExpressionSyntax : ExpressionSyntax {
 
         internal MemberAccessExpressionSyntax( SyntaxToken memberName ) {

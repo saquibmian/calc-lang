@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class ExpressionStatementSyntax : StatementSyntax {
 
         internal ExpressionStatementSyntax( ExpressionSyntax expression ) {

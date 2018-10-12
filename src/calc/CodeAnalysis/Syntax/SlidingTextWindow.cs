@@ -1,4 +1,4 @@
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     internal sealed class SlidingTextWindow {
         private readonly string _text;
 

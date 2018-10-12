@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class InvocationExpressionSyntax : ExpressionSyntax {
         internal InvocationExpressionSyntax( MemberAccessExpressionSyntax member, ArgumentListSyntax argumentList ) {
             Member = member;

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using CalcLang.CodeAnalysis;
+using CalcLang.CodeAnalysis.Syntax;
 
 namespace CalcLang {
     internal sealed class Interpreter {

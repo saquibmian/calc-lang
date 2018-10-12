@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class FloatLiteralExpressionSyntax : ConstantExpressionSyntax {
         internal FloatLiteralExpressionSyntax( SyntaxToken numberToken ) {
             NumberToken = numberToken;

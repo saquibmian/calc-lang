@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class SyntaxTree {
         internal SyntaxTree( StatementSyntax root, SyntaxToken endOfFileToken, ImmutableArray<Diagnostic> diagnostics ) {
             Root = root;

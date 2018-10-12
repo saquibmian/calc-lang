@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class ParenthetizedExpressionSyntax : ExpressionSyntax {
         internal ParenthetizedExpressionSyntax( SyntaxToken openParenthesis, ExpressionSyntax expression, SyntaxToken closeParenthesis ) {
             Expression = expression;

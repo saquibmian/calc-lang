@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class ArgumentSyntax : SyntaxNode {
         // TODO(snm) add overload with name colon
         internal ArgumentSyntax( ExpressionSyntax expression ) {

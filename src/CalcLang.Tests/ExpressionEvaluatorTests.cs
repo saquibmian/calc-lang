@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using CalcLang.CodeAnalysis;
+using CalcLang.CodeAnalysis.Syntax;
 using Xunit;
 
 namespace CalcLang {

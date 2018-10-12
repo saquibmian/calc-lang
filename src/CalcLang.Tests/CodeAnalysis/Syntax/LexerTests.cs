@@ -1,7 +1,7 @@
 using System.Linq;
 using Xunit;
 
-namespace CalcLang.CodeAnalysis {
+namespace CalcLang.CodeAnalysis.Syntax {
     public sealed class LexerTests {
 
         [Theory]
