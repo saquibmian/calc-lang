@@ -9,6 +9,9 @@ namespace CalcLang {
             var runtime = new Runtime();
             runtime.SetVariable( "PI", Math.PI );
             runtime.AddMethod( new AddInt32sMethod() );
+            runtime.AddMethod( new SubtractInt32sMethod() );
+            runtime.AddMethod( new DivideInt32sMethod() );
+            runtime.AddMethod( new MultiplyInt32sMethod() );
             runtime.AddMethod( new SumMethod() );
             return runtime;
         } );
