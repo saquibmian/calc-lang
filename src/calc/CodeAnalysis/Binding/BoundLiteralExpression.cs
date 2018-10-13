@@ -3,7 +3,7 @@ using System;
 namespace CalcLang.CodeAnalysis.Binding {
     public sealed class BoundLiteralExpression : BoundExpression {
         internal BoundLiteralExpression( object value ) {
-            Value = value;
+            Value = value ?? 0;
         }
 
         public object Value { get; }
