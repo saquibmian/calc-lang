@@ -23,13 +23,16 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 case SyntaxKind.MinusToken:
                     return 4;
 
+                case SyntaxKind.AmpersandToken:
                 case SyntaxKind.AmpersandAmpersandToken:
                     return 3;
 
+                case SyntaxKind.PipeToken:
                 case SyntaxKind.PipePipeToken:
                     return 2;
 
                 case SyntaxKind.EqualsEqualsToken:
+                case SyntaxKind.BangEqualsToken:
                     return 1;
 
                 default:

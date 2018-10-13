@@ -46,6 +46,12 @@ namespace CalcLang.CodeAnalysis.Syntax {
         [InlineData( "1 - 2", SyntaxKind.MinusToken )]
         [InlineData( "1 * 2", SyntaxKind.StarToken )]
         [InlineData( "1 / 2", SyntaxKind.ForwardSlashToken )]
+        [InlineData( "1 == 2", SyntaxKind.EqualsEqualsToken )]
+        [InlineData( "1 != 2", SyntaxKind.BangEqualsToken )]
+        [InlineData( "1 & 2", SyntaxKind.AmpersandToken )]
+        [InlineData( "1 && 2", SyntaxKind.AmpersandAmpersandToken )]
+        [InlineData( "1 | 2", SyntaxKind.PipeToken )]
+        [InlineData( "1 || 2", SyntaxKind.PipePipeToken )]
         public void Operator__Valid__ParsesBinaryExpression( string input, SyntaxKind operatorTokenKind ) {
             var expr = ParseExpression<BinaryExpressionSyntax>( input );
 

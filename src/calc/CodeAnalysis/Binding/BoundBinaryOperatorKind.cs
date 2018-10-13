@@ -6,7 +6,8 @@ namespace CalcLang.CodeAnalysis.Binding {
         Division,
         LogicalAnd,
         LogicalOr,
-        Equality
+        Equality,
+        Inequality
     }
 
 }

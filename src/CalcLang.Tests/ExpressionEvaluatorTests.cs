@@ -29,7 +29,6 @@ namespace CalcLang {
             Assert.Equal( 1.1f, result );
         }
 
-
         [Fact]
         public void Add__Works() {
             var expr = Expression<BoundBinaryExpression>( "1 + 2" );
@@ -38,7 +37,6 @@ namespace CalcLang {
 
             Assert.Equal( 3, result );
         }
-
 
         [Theory]
         [InlineData( "+1", 1 )]
@@ -54,7 +52,11 @@ namespace CalcLang {
         [InlineData( "!(1==1)", false )]
         [InlineData( "true==true", true )]
         [InlineData( "!(true==true)", false )]
-        public void TestAllTheThings( string input, object expectedResult ) {
+        [InlineData( "1!=1", false )]
+        [InlineData( "!(1!=1)", true )]
+        [InlineData( "true!=true", false )]
+        [InlineData( "!(true!=true)", true )]
+        public void Evaluate( string input, object expectedResult ) {
             var tree = SyntaxTree.Parse( input );
             Assert.Empty( tree.Diagnostics );
             var expr = Assert.IsAssignableFrom<ExpressionSyntax>( tree.Root );

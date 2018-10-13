@@ -53,6 +53,8 @@ namespace CalcLang {
             switch ( b.Op.Kind ) {
                 case BoundBinaryOperatorKind.Equality:
                     return left.Equals( right );
+                case BoundBinaryOperatorKind.Inequality:
+                    return !left.Equals( right );
                 case BoundBinaryOperatorKind.Addition:
                     return (int)left + (int)right;
                 case BoundBinaryOperatorKind.Subtraction:

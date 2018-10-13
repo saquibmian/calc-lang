@@ -47,6 +47,10 @@ namespace CalcLang.CodeAnalysis.Syntax {
                     return new SyntaxToken( SyntaxKind.CommaToken, _window.WindowStart, ",", null );
                 case '!':
                     _window.Next();
+                    if ( _window.Peek() == '=' ) {
+                        _window.Next();
+                        return new SyntaxToken( SyntaxKind.BangEqualsToken, _window.WindowStart, "!=", null );
+                    }
                     return new SyntaxToken( SyntaxKind.BangToken, _window.WindowStart, "!", null );
                 case '=':
                     _window.Next();

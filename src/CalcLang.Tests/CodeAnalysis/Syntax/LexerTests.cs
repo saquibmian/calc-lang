@@ -6,6 +6,17 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
         [Theory]
         [InlineData( "+", SyntaxKind.PlusToken )]
+        [InlineData( "-", SyntaxKind.MinusToken )]
+        [InlineData( "*", SyntaxKind.StarToken )]
+        [InlineData( "/", SyntaxKind.ForwardSlashToken )]
+        [InlineData( "!", SyntaxKind.BangToken )]
+        [InlineData( "&", SyntaxKind.AmpersandToken )]
+        [InlineData( "&&", SyntaxKind.AmpersandAmpersandToken )]
+        [InlineData( "|", SyntaxKind.PipeToken )]
+        [InlineData( "||", SyntaxKind.PipePipeToken )]
+        [InlineData( "=", SyntaxKind.EqualsToken )]
+        [InlineData( "==", SyntaxKind.EqualsEqualsToken )]
+        [InlineData( "!=", SyntaxKind.BangEqualsToken )]
         public void Operator__Valid__LexesCorrectOperatorToken( string input, SyntaxKind expectedKind ) {
             var result = LexSingle( input );
 

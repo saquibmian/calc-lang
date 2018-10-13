@@ -14,6 +14,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         CommaToken,
         EqualsToken,
         EqualsEqualsToken,
+        BangEqualsToken,
         PipeToken,
         PipePipeToken,
         AmpersandToken,

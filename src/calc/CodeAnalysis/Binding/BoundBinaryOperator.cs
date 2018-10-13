@@ -16,7 +16,9 @@ namespace CalcLang.CodeAnalysis.Binding {
             new BoundBinaryOperator( SyntaxKind.PipePipeToken, BoundBinaryOperatorKind.LogicalOr, typeof( bool ) ),
 
             new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( int ), typeof( int ), typeof( bool ) ),
-            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( bool ), typeof( bool ), typeof( bool ) )
+            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( bool ), typeof( bool ), typeof( bool ) ),
+            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( int ), typeof( int ), typeof( bool ) ),
+            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( bool ), typeof( bool ), typeof( bool ) )
         );
 
         private BoundBinaryOperator( SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type operandType )
