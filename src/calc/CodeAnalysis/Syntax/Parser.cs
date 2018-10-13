@@ -32,7 +32,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         private void MoveNext() => ++_position;
 
         internal SyntaxTree ParseSyntaxTree() {
-            var statement = ParseStatement();
+            var statement = ParseExpression();
             var eofToken = Expect( SyntaxKind.EndOfFileToken );
 
             return new SyntaxTree( statement, eofToken, _diagnostics.ToImmutableArray() );

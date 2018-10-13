@@ -53,7 +53,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         public void Operator__Valid__ParsesUnaryExpression( string input, SyntaxKind operatorTokenKind ) {
             var expr = ParseExpression<UnaryExpressionSyntax>( input );
 
-            Assert.Equal( operatorTokenKind, expr.Operand.Kind );
+            Assert.Equal( operatorTokenKind, expr.OperatorToken.Kind );
             var left = Assert.IsType<IntegerLiteralExpressionSyntax>( expr.Expression );
             Assert.Equal( 1, left.NumberToken.Value );
         }

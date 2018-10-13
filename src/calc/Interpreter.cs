@@ -2,10 +2,12 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using CalcLang.CodeAnalysis;
+using CalcLang.CodeAnalysis.Binding;
 using CalcLang.CodeAnalysis.Syntax;
 
 namespace CalcLang {
     internal sealed class Interpreter {
+        private readonly Binder _binder = new Binder();
         private readonly VirtualMachine _vm = new VirtualMachine();
         private readonly Runtime _runtime = Runtime.Global.CreateScope();
 
@@ -62,7 +64,8 @@ namespace CalcLang {
             }
 
             try {
-                var result = _vm.Run( tree.Root, _runtime );
+                var bound = _binder.BindExpression( (ExpressionSyntax)tree.Root );
+                var result = _vm.Run( bound, _runtime );
                 Console.WriteLine( result );
             } catch ( Exception e ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
