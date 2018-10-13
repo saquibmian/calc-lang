@@ -7,9 +7,12 @@ namespace CalcLang.CodeAnalysis.Binding {
     public sealed class BoundUnaryOperator {
 
         private readonly static ImmutableArray<BoundUnaryOperator> _ops = ImmutableArray.Create(
-            new BoundUnaryOperator( SyntaxKind.BangToken, BoundUnaryOperatorKind.LogicalNot, typeof( bool ) ),
+            // Int32 operators
             new BoundUnaryOperator( SyntaxKind.PlusToken, BoundUnaryOperatorKind.Identity, typeof( int ) ),
-            new BoundUnaryOperator( SyntaxKind.MinusToken, BoundUnaryOperatorKind.Negation, typeof( int ) )
+            new BoundUnaryOperator( SyntaxKind.MinusToken, BoundUnaryOperatorKind.Negation, typeof( int ) ),
+
+            // Boolean operators
+            new BoundUnaryOperator( SyntaxKind.BangToken, BoundUnaryOperatorKind.LogicalNot, typeof( bool ) )
         );
 
         private BoundUnaryOperator( SyntaxKind syntaxKind, BoundUnaryOperatorKind kind, Type operandType )

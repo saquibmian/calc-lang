@@ -7,18 +7,19 @@ namespace CalcLang.CodeAnalysis.Binding {
     public sealed class BoundBinaryOperator {
 
         private static readonly ImmutableArray<BoundBinaryOperator> _ops = ImmutableArray.Create(
+            // Int32 operators
             new BoundBinaryOperator( SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof( int ) ),
             new BoundBinaryOperator( SyntaxKind.MinusToken, BoundBinaryOperatorKind.Subtraction, typeof( int ) ),
             new BoundBinaryOperator( SyntaxKind.ForwardSlashToken, BoundBinaryOperatorKind.Division, typeof( int ) ),
             new BoundBinaryOperator( SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof( int ) ),
+            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( int ), typeof( int ), typeof( bool ) ),
+            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( int ), typeof( int ), typeof( bool ) ),
 
+            // Boolean operators
             new BoundBinaryOperator( SyntaxKind.AmpersandAmpersandToken, BoundBinaryOperatorKind.LogicalAnd, typeof( bool ) ),
             new BoundBinaryOperator( SyntaxKind.PipePipeToken, BoundBinaryOperatorKind.LogicalOr, typeof( bool ) ),
-
-            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( int ), typeof( int ), typeof( bool ) ),
-            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( bool ), typeof( bool ), typeof( bool ) ),
-            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( int ), typeof( int ), typeof( bool ) ),
-            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( bool ), typeof( bool ), typeof( bool ) )
+            new BoundBinaryOperator( SyntaxKind.EqualsEqualsToken, BoundBinaryOperatorKind.Equality, typeof( bool ) ),
+            new BoundBinaryOperator( SyntaxKind.BangEqualsToken, BoundBinaryOperatorKind.Inequality, typeof( bool ) )
         );
 
         private BoundBinaryOperator( SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type operandType )
