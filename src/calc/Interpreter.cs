@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CalcLang.CodeAnalysis;
 using CalcLang.CodeAnalysis.Binding;
@@ -7,9 +8,7 @@ using CalcLang.CodeAnalysis.Syntax;
 
 namespace CalcLang {
     internal sealed class Interpreter {
-        private readonly Binder _binder = new Binder();
-        private readonly VirtualMachine _vm = new VirtualMachine();
-        private readonly Runtime _runtime = Runtime.Global.CreateScope();
+        private readonly ExpressionEvaluator _evaluator = new ExpressionEvaluator();
 
         private bool _printTree;
         private bool _done;
@@ -54,9 +53,13 @@ namespace CalcLang {
                 }
             }
 
-            if ( !tree.Diagnostics.IsEmpty ) {
+            var binder = new Binder();
+            var bound = binder.BindExpression( (ExpressionSyntax)tree.Root );
+
+            var diagnostics = Enumerable.Concat( tree.Diagnostics, binder.Diagnostics ).ToArray();
+            if ( diagnostics.Length > 0 ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
-                    foreach ( var diag in tree.Diagnostics ) {
+                    foreach ( var diag in diagnostics ) {
                         Console.WriteLine( $"Error at position {diag.Position}: {diag.Message}" );
                     }
                     return;
@@ -64,8 +67,7 @@ namespace CalcLang {
             }
 
             try {
-                var bound = _binder.BindExpression( (ExpressionSyntax)tree.Root );
-                var result = _vm.Run( bound, _runtime );
+                var result = _evaluator.Evaluate( bound );
                 Console.WriteLine( result );
             } catch ( Exception e ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {

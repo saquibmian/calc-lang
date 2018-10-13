@@ -8,71 +8,79 @@ using CalcLang.CodeAnalysis.Syntax;
 namespace CalcLang {
     public sealed class ExpressionEvaluator {
 
-        public object Evaluate( BoundExpression expression, Runtime runtime ) {
+        public object Evaluate( BoundExpression expression ) {
             switch ( expression ) {
                 case BoundLiteralExpression n:
                     return n.Value;
 
                 case BoundUnaryExpresion u:
-                    return Evaluate( u, runtime );
+                    return Evaluate( u );
 
                 case BoundBinaryExpression b:
-                    return Evaluate( b, runtime );
+                    return Evaluate( b );
 
                 // TODO
                 // case InvocationExpressionSyntax i:
-                //     return Evaluate( i, runtime );
+                //     return Evaluate( i );
 
                 // case MemberAccessExpressionSyntax m:
-                //     return Evaluate( m, runtime );
+                //     return Evaluate( m );
 
                 default:
                     throw new Exception( $"Unexpected expression {expression.Kind}" );
             }
         }
 
-        private object Evaluate( BoundUnaryExpresion u, Runtime runtime ) {
-            var expr = (int)Evaluate( u.Expression, runtime );
+        private object Evaluate( BoundUnaryExpresion u ) {
+            var expr = Evaluate( u.Expression );
 
             switch ( u.OperatorKind ) {
                 case BoundUnaryOperatorKind.Identity:
-                    return expr;
+                    return (int)expr;
                 case BoundUnaryOperatorKind.Negation:
-                    return -expr;
+                    return -(int)expr;
+                case BoundUnaryOperatorKind.LogicalNot:
+                    return !(bool)expr;
 
                 default:
-                    throw new Exception( $"The operator {u.OperatorKind} is not defined for type {u.Expression.ReturnType}" );
+                    throw new Exception( $"Unexpected unary operator {u.OperatorKind}" );
             }
         }
 
-        private object Evaluate( BoundBinaryExpression b, Runtime runtime ) {
-            var left = (int)Evaluate( b.Left, runtime );
-            var right = (int)Evaluate( b.Right, runtime );
+        private object Evaluate( BoundBinaryExpression b ) {
+            var left = Evaluate( b.Left );
+            var right = Evaluate( b.Right );
 
             switch ( b.OperatorKind ) {
+                case BoundBinaryOperatorKind.Equality:
+                    return left.Equals( right );
                 case BoundBinaryOperatorKind.Addition:
-                    return left + right;
+                    return (int)left + (int)right;
                 case BoundBinaryOperatorKind.Subtraction:
-                    return left - right;
+                    return (int)left - (int)right;
                 case BoundBinaryOperatorKind.Multiplication:
-                    return left * right;
+                    return (int)left * (int)right;
                 case BoundBinaryOperatorKind.Division:
-                    return left / right;
+                    return (int)left / (int)right;
+                case BoundBinaryOperatorKind.LogicalAnd:
+                    return (bool)left && (bool)right;
+                case BoundBinaryOperatorKind.LogicalOr:
+                    return (bool)left || (bool)right;
 
                 default:
-                    throw new Exception( $"The operator {b.OperatorKind} is not defined for types {b.Left.ReturnType} and {b.Right.ReturnType}" );
+                    throw new Exception( $"Unexpected binary operator {b.OperatorKind}" );
             }
         }
 
         // TODO
-        // private object Evaluate( InvocationExpressionSyntax i, Runtime runtime ) {
+        // private object Evaluate( InvocationExpressionSyntax i ) {
         //     // TODO: find a way to determine the return type of the expression
         //     var args = i.ArgumentList.Arguments.Nodes
-        //         .Select( arg => Evaluate( arg.Expression, runtime ) )
+        //         .Select( arg => Evaluate( arg.Expression ) )
         //         .ToArray();
         //     var argTypes = args.Select( a => a.GetType() ).ToArray();
 
-        //     var method = runtime.GetMethod( (string)i.Member.MemberName.Value, argTypes );
+        //     var method .GetMethod( (string)i.Member.MemberName.Value, argTypes );
         //     if ( method == null ) {
         //         throw new Exception( $"Unknown function '{i.Member.MemberName.Value}'" );
         //     }
@@ -82,7 +90,7 @@ namespace CalcLang {
         //     }
 
         //     // create a new scope with the args for the method
-        //     var scope = runtime.CreateScope();
+        //     var scope .CreateScope();
         //     for ( int idx = 0; idx < args.Length; ++idx ) {
         //         scope.SetVariable( method.Parameters[idx].Name, args[idx] );
         //     }
@@ -90,8 +98,8 @@ namespace CalcLang {
         //     return method.Execute( scope );
         // }
 
-        // private object Evaluate( MemberAccessExpressionSyntax m, Runtime runtime ) {
-        //     if ( runtime.TryGetVariableValue( (string)m.MemberName.Value, out var value ) ) {
+        // private object Evaluate( MemberAccessExpressionSyntax m ) {
+        //     if .TryGetVariableValue( (string)m.MemberName.Value, out var value ) ) {
         //         return value;
         //     }
 

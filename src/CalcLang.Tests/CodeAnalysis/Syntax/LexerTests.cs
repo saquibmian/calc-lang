@@ -48,6 +48,17 @@ namespace CalcLang.CodeAnalysis.Syntax {
         }
 
         [Theory]
+        [InlineData( "true", SyntaxKind.TrueKeyword )]
+        [InlineData( "false", SyntaxKind.FalseKeyword )]
+        public void Keyword__Valid__LexesKeywordToken( string input, SyntaxKind expectedKind ) {
+            var result = LexSingle( input );
+
+            Assert.Equal( expectedKind, result.Kind );
+            Assert.Equal( input, result.ValueText );
+            Assert.Null( result.Value );
+        }
+
+        [Theory]
         [InlineData( "foo" )]
         [InlineData( "m_something" )]
         [InlineData( "_something" )]
@@ -58,15 +69,15 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
             Assert.Equal( SyntaxKind.IdentiferToken, result.Kind );
             Assert.Equal( input, result.ValueText );
-            Assert.Equal( input, result.Value );
+            Assert.Null( result.Value );
         }
 
         [Theory]
         [InlineData( "1a" )]
-        public void Identifier__StartsWithDigit__LexesFloatTokenWithDiag( string input ) {
+        public void Identifier__StartsWithDigit__LexesIntTokenWithDiag( string input ) {
             var result = LexSingle( input, errorCount: 1 );
 
-            Assert.Equal( SyntaxKind.FloatToken, result.Kind );
+            Assert.Equal( SyntaxKind.IntegerToken, result.Kind );
             Assert.Equal( input, result.ValueText );
             Assert.Null( result.Value );
         }

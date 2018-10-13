@@ -82,7 +82,9 @@ namespace CalcLang.CodeAnalysis.Syntax {
             switch ( Current.Kind ) {
                 case SyntaxKind.TrueKeyword:
                 case SyntaxKind.FalseKeyword:
-                    return new BooleanLiteralExpressionSyntax( Current, Current.Kind == SyntaxKind.TrueKeyword );
+                    var boolToken = Current;
+                    MoveNext();
+                    return new BooleanLiteralExpressionSyntax( boolToken, boolToken.Kind == SyntaxKind.TrueKeyword );
 
                 case SyntaxKind.IdentiferToken:
                     var memberName = Expect( SyntaxKind.IdentiferToken );

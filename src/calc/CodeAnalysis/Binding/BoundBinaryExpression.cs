@@ -12,6 +12,7 @@ namespace CalcLang.CodeAnalysis.Binding {
         public BoundBinaryOperatorKind OperatorKind { get; }
         public BoundExpression Right { get; }
 
+        // TODO fix this
         public override Type ReturnType => Left.ReturnType;
 
         public override BoundNodeKind Kind => BoundNodeKind.BinaryExpression;

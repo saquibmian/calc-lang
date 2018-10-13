@@ -5,7 +5,8 @@ namespace CalcLang.CodeAnalysis.Syntax {
             switch ( token.Kind ) {
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
-                    return 3;
+                case SyntaxKind.BangToken:
+                    return 6;
 
                 default:
                     return 0;
@@ -16,10 +17,19 @@ namespace CalcLang.CodeAnalysis.Syntax {
             switch ( token.Kind ) {
                 case SyntaxKind.ForwardSlashToken:
                 case SyntaxKind.StarToken:
-                    return 2;
+                    return 5;
 
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
+                    return 4;
+
+                case SyntaxKind.AmpersandAmpersandToken:
+                    return 3;
+
+                case SyntaxKind.PipePipeToken:
+                    return 2;
+
+                case SyntaxKind.EqualsEqualsToken:
                     return 1;
 
                 default:

@@ -45,6 +45,9 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 case ',':
                     _window.Next();
                     return new SyntaxToken( SyntaxKind.CommaToken, _window.WindowStart, ",", null );
+                case '!':
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.BangToken, _window.WindowStart, "!", null );
                 case '=':
                     _window.Next();
                     if ( _window.Peek() == '=' ) {
@@ -92,7 +95,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 case var letter when char.IsLetter( letter ) || letter == '_':
                     var identifer = ReadIdentifier();
                     var kind = SyntaxFacts.GetKeywordKind( identifer );
-                    return new SyntaxToken( kind, _window.WindowStart, identifer, identifer );
+                    return new SyntaxToken( kind, _window.WindowStart, identifer, null );
 
                 // bad token
                 default:
@@ -130,7 +133,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 case var letter when char.IsLetter( letter ):
                     _window.Next();
                     _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
-                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, null );
+                    return new SyntaxToken( SyntaxKind.IntegerToken, _window.WindowStart, _window.Value, null );
 
                 default:
                     if ( !int.TryParse( _window.Value, out var parsedInteger ) ) {

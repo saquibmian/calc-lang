@@ -1,6 +1,6 @@
 using System;
 
-namespace CalcLang.CodeAnalysis.Syntax {
+namespace CalcLang.CodeAnalysis {
     public sealed class Diagnostic {
         internal Diagnostic(int position, string message) {
             if ( string.IsNullOrWhiteSpace( message ) ) {

@@ -18,6 +18,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         PipePipeToken,
         AmpersandToken,
         AmpersandAmpersandToken,
+        BangToken,
         IntegerToken,
         FloatToken,
         IdentiferToken,
@@ -38,6 +39,5 @@ namespace CalcLang.CodeAnalysis.Syntax {
         SeparatedSyntaxList,
         ArgumentList,
         Argument,
-
     }
 }

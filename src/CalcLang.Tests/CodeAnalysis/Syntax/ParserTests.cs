@@ -23,13 +23,22 @@ namespace CalcLang.CodeAnalysis.Syntax {
         }
 
         [Theory]
+        [InlineData( "true" )]
+        [InlineData( "false" )]
+        public void Boolean__Valid__ParsesBooleanLiteralExpression( string input ) {
+            var expr = ParseExpression<BooleanLiteralExpressionSyntax>( input );
+
+            Assert.Equal( bool.Parse( input ), expr.Value );
+        }
+
+        [Theory]
         [InlineData( "foo" )]
         [InlineData( "m_something" )]
         [InlineData( "_something" )]
         public void Identifier__Valid__ParsesMemberAccessExpression( string input ) {
             var expr = ParseExpression<MemberAccessExpressionSyntax>( input );
 
-            Assert.Equal( input, expr.MemberName.Value );
+            Assert.Equal( input, expr.MemberName.ValueText );
         }
 
         [Theory]
@@ -64,7 +73,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
             var expr = ParseExpression<InvocationExpressionSyntax>( input );
 
-            Assert.Equal( "foo", expr.Member.MemberName.Value );
+            Assert.Equal( "foo", expr.Member.MemberName.ValueText );
             Assert.Empty( expr.ArgumentList.Arguments.Nodes );
         }
 
@@ -82,13 +91,14 @@ namespace CalcLang.CodeAnalysis.Syntax {
             var thirdArg = Assert.IsType<FloatLiteralExpressionSyntax>( args[2].Expression );
             Assert.Equal( 2.5f, thirdArg.NumberToken.Value );
             var fourthArg = Assert.IsType<MemberAccessExpressionSyntax>( args[3].Expression );
-            Assert.Equal( "_bar", fourthArg.MemberName.Value );
+            Assert.Equal( "_bar", fourthArg.MemberName.ValueText );
             var fifthArg = Assert.IsType<ParenthetizedExpressionSyntax>( args[4].Expression );
             var fifthArgExpression = Assert.IsType<BinaryExpressionSyntax>( fifthArg.Expression );
         }
 
         private T ParseExpression<T>( string input ) where T : ExpressionSyntax {
             var tree = SyntaxTree.Parse( input );
+            Assert.Empty( tree.Diagnostics );
             return Assert.IsType<T>( tree.Root );
         }
 
