@@ -111,39 +111,47 @@ namespace CalcLang.CodeAnalysis.Syntax {
         }
 
         private SyntaxToken LexNumber() {
+            var kind = SyntaxKind.IntegerToken;
+
             while ( char.IsDigit( _window.Peek() ) ) {
                 _window.Next();
             }
 
-            float parsedFloat;
-            switch ( _window.Peek() ) {
+        numberKind: switch ( _window.Peek() ) {
                 case 'f':
+                    kind = SyntaxKind.FloatToken;
                     _window.Next();
-                    if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out parsedFloat ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
-                    }
-                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, parsedFloat );
+                    break;
 
                 case '.':
+                    kind = SyntaxKind.FloatToken;
                     _window.Next();
                     while ( char.IsDigit( _window.Peek() ) ) {
                         _window.Next();
                     }
-                    if ( !float.TryParse( _window.Value, out parsedFloat ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
-                    }
-                    return new SyntaxToken( SyntaxKind.FloatToken, _window.WindowStart, _window.Value, parsedFloat );
+                    goto numberKind;
 
                 case var letter when char.IsLetter( letter ):
                     _window.Next();
-                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
-                    return new SyntaxToken( SyntaxKind.IntegerToken, _window.WindowStart, _window.Value, null );
+                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected a number, but found '{_window.Value}'" ) );
+                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, null );
+            }
 
-                default:
-                    if ( !int.TryParse( _window.Value, out var parsedInteger ) ) {
+            switch ( kind ) {
+                case SyntaxKind.FloatToken:
+                    if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out float parsedFloat ) ) {
+                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
+                    }
+                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, parsedFloat );
+
+                case SyntaxKind.IntegerToken:
+                    if ( !int.TryParse( _window.Value, out int parsedInt ) ) {
                         _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
                     }
-                    return new SyntaxToken( SyntaxKind.IntegerToken, _window.WindowStart, _window.Value, parsedInteger );
+                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, parsedInt );
+
+                default:
+                    throw new Exception( $"Unhandled number kind {kind}" );
             }
         }
 

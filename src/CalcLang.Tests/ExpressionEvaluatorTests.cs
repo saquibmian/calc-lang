@@ -19,7 +19,7 @@ namespace CalcLang {
 
         [Fact]
         public void FloatLiteral__Works() {
-            var expr = Expression<BoundLiteralExpression>( "1.1" );
+            var expr = Expression<BoundLiteralExpression>( "1.1f" );
 
             var result = _evaluator.Evaluate( expr );
 
