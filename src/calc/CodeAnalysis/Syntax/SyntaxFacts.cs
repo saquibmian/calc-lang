@@ -27,5 +27,17 @@ namespace CalcLang.CodeAnalysis.Syntax {
             }
         }
 
+        public static SyntaxKind GetKeywordKind( this string keyword ) {
+            switch ( keyword ) {
+                case "true":
+                    return SyntaxKind.TrueKeyword;
+                case "false":
+                    return SyntaxKind.FalseKeyword;
+
+                default:
+                    return SyntaxKind.IdentiferToken;
+            }
+        }
+
     }
 }

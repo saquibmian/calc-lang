@@ -50,7 +50,9 @@ namespace CalcLang {
         [InlineData( "-1", -1 )]
         [InlineData( "-2 * 3", -2 * 3 )]
         [InlineData( "-(2 * 3 + 1)", -( 2 * 3 + 1 ) )]
-        public void TestAllTheThings( string input, int expectedResult ) {
+        [InlineData( "true", true )]
+        [InlineData( "false", false )]
+        public void TestAllTheThings( string input, object expectedResult ) {
             _runtime.SetVariable( "foo", 100 );
             var tree = SyntaxTree.Parse( input );
             var expr = Assert.IsAssignableFrom<ExpressionSyntax>( tree.Root );

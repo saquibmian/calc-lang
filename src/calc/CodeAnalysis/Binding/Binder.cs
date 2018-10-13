@@ -7,6 +7,7 @@ namespace CalcLang.CodeAnalysis.Binding {
             switch ( syntax.Kind ) {
                 case SyntaxKind.IntegerLiteralExpression:
                 case SyntaxKind.FloatLiteralExpression:
+                case SyntaxKind.BooleanLiteralExpression:
                     return BindConstantExpression( (ConstantExpressionSyntax)syntax );
 
                 case SyntaxKind.UnaryExpression:

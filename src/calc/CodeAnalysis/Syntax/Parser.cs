@@ -49,22 +49,6 @@ namespace CalcLang.CodeAnalysis.Syntax {
             return token;
         }
 
-        private StatementSyntax ParseStatement() {
-            if ( Current.Kind == SyntaxKind.IdentiferToken ) {
-                switch ( Current.Value ) {
-                    case "let":
-                        var letToken = Expect( SyntaxKind.IdentiferToken );
-                        var varName = Expect( SyntaxKind.IdentiferToken );
-                        var equalsToken = Expect( SyntaxKind.EqualsToken );
-                        var varValue = ParseExpression();
-                        return new LocalDeclarationStatementSyntax( letToken, varName, equalsToken, varValue );
-                }
-            }
-
-            var expression = ParseExpression();
-            return new ExpressionStatementSyntax( expression );
-        }
-
         private ExpressionSyntax ParseExpression( int parentPrecendence = 0 ) {
             ExpressionSyntax left;
 
@@ -95,32 +79,33 @@ namespace CalcLang.CodeAnalysis.Syntax {
         }
 
         private ExpressionSyntax ParsePrimaryExpression() {
-            if ( Current.Kind == SyntaxKind.IdentiferToken ) {
-                var memberName = Expect( SyntaxKind.IdentiferToken );
-                var memberAccess = new MemberAccessExpressionSyntax( memberName );
-                if ( Current.Kind != SyntaxKind.OpenParenthesisToken ) {
-                    return memberAccess;
-                }
-                var arguments = ParseArgumentList();
-                return new InvocationExpressionSyntax( memberAccess, arguments );
-            }
+            switch ( Current.Kind ) {
+                case SyntaxKind.TrueKeyword:
+                case SyntaxKind.FalseKeyword:
+                    return new BooleanLiteralExpressionSyntax( Current, Current.Kind == SyntaxKind.TrueKeyword );
 
-            if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
-                var open = Expect( SyntaxKind.OpenParenthesisToken );
-                var expression = ParseExpression();
-                var close = Expect( SyntaxKind.CloseParenthesisToken );
-                return new ParenthetizedExpressionSyntax( open, expression, close );
-            }
+                case SyntaxKind.IdentiferToken:
+                    var memberName = Expect( SyntaxKind.IdentiferToken );
+                    var memberAccess = new MemberAccessExpressionSyntax( memberName );
+                    if ( Current.Kind != SyntaxKind.OpenParenthesisToken ) {
+                        return memberAccess;
+                    }
+                    var arguments = ParseArgumentList();
+                    return new InvocationExpressionSyntax( memberAccess, arguments );
 
-            if ( Current.Kind == SyntaxKind.IntegerToken ) {
-                var token = Expect( SyntaxKind.IntegerToken );
-                return new IntegerLiteralExpressionSyntax( token );
+                case SyntaxKind.OpenParenthesisToken:
+                    var open = Expect( SyntaxKind.OpenParenthesisToken );
+                    var expression = ParseExpression();
+                    var close = Expect( SyntaxKind.CloseParenthesisToken );
+                    return new ParenthetizedExpressionSyntax( open, expression, close );
 
-            }
+                case SyntaxKind.IntegerToken:
+                    var intToken = Expect( SyntaxKind.IntegerToken );
+                    return new IntegerLiteralExpressionSyntax( intToken );
 
-            if ( Current.Kind == SyntaxKind.FloatToken ) {
-                var token = Expect( SyntaxKind.FloatToken );
-                return new FloatLiteralExpressionSyntax( token );
+                case SyntaxKind.FloatToken:
+                    var floatToken = Expect( SyntaxKind.FloatToken );
+                    return new FloatLiteralExpressionSyntax( floatToken );
             }
 
             throw new Exception( $"Unhandled primary expression kind: {Current.Kind}" );

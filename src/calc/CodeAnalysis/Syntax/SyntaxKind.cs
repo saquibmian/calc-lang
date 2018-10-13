@@ -26,6 +26,9 @@ namespace CalcLang.CodeAnalysis.Syntax {
         LocalDeclarationStatement,
         FloatLiteralExpression,
         FloatToken,
-        UnaryExpression
+        UnaryExpression,
+        TrueKeyword,
+        FalseKeyword,
+        BooleanLiteralExpression
     }
 }

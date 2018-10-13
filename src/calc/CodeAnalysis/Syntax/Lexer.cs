@@ -73,7 +73,8 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 // words
                 case var letter when char.IsLetter( letter ) || letter == '_':
                     var identifer = ReadIdentifier();
-                    return new SyntaxToken( SyntaxKind.IdentiferToken, _window.WindowStart, identifer, identifer );
+                    var kind = SyntaxFacts.GetKeywordKind( identifer );
+                    return new SyntaxToken( kind, _window.WindowStart, identifer, identifer );
 
                 // bad token
                 default:
@@ -90,7 +91,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
             }
 
             float parsedFloat;
-            switch(_window.Peek()) {
+            switch ( _window.Peek() ) {
                 case 'f':
                     _window.Next();
                     if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out parsedFloat ) ) {

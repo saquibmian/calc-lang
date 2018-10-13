@@ -87,25 +87,9 @@ namespace CalcLang.CodeAnalysis.Syntax {
             var fifthArgExpression = Assert.IsType<BinaryExpressionSyntax>( fifthArg.Expression );
         }
 
-        [Fact]
-        public void LocalDeclaration__Valid__ParsesLocalDeclarationCorrectly() {
-            const string input = "let x = 1 + 2";
-
-            var statement = ParseStatement<LocalDeclarationStatementSyntax>( input );
-
-            Assert.Equal( "x", statement.NameToken.Value );
-            Assert.IsType<BinaryExpressionSyntax>( statement.Expression );
-        }
-
-        private T ParseStatement<T>( string input ) where T : StatementSyntax {
-            var tree = SyntaxTree.Parse( input );
-            var expr = Assert.IsType<T>( tree.Root );
-            return expr;
-        }
-
         private T ParseExpression<T>( string input ) where T : ExpressionSyntax {
-            var expr = ParseStatement<ExpressionStatementSyntax>( input );
-            return Assert.IsType<T>( expr.Expression );
+            var tree = SyntaxTree.Parse( input );
+            return Assert.IsType<T>( tree.Root );
         }
 
     }
