@@ -99,8 +99,8 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
                 // bad token
                 default:
-                    var badToken = ReadIdentifier();
-                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"invalid token: '{badToken}'" ) );
+                    var badToken = ReadUntilWhitespace();
+                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Bad character input: '{badToken}'" ) );
                     return new SyntaxToken( SyntaxKind.BadToken, _window.WindowStart, badToken, null );
 
             }
@@ -145,6 +145,13 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
         private string ReadIdentifier() {
             while ( char.IsLetterOrDigit( _window.Peek() ) || _window.Peek() == '_' ) {
+                _window.Next();
+            }
+            return _window.Value;
+        }
+
+        private string ReadUntilWhitespace() {
+            while ( !char.IsWhiteSpace( _window.Peek() ) ) {
                 _window.Next();
             }
             return _window.Value;
