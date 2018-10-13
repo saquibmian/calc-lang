@@ -60,7 +60,7 @@ namespace CalcLang {
             if ( diagnostics.Length > 0 ) {
                 using ( new OutputColor( foreground: ConsoleColor.Red ) ) {
                     foreach ( var diag in diagnostics ) {
-                        Console.WriteLine( $"Error at position {diag.Position}: {diag.Message}" );
+                        Console.WriteLine( $"Error at position {diag.Location}: {diag.Message}" );
                     }
                     return;
                 }

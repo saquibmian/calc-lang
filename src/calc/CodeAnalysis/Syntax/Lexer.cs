@@ -21,58 +21,58 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
                 // end of file
                 case '\0':
-                    return new SyntaxToken( SyntaxKind.EndOfFileToken, _window.WindowStart, "\0", null );
+                    return new SyntaxToken( SyntaxKind.EndOfFileToken, _window.Location, "\0", null );
 
                 // one-character tokens
                 case '+':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.PlusToken, _window.WindowStart, "+", null );
+                    return new SyntaxToken( SyntaxKind.PlusToken, _window.Location, "+", null );
                 case '-':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.MinusToken, _window.WindowStart, "-", null );
+                    return new SyntaxToken( SyntaxKind.MinusToken, _window.Location, "-", null );
                 case '/':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.ForwardSlashToken, _window.WindowStart, "/", null );
+                    return new SyntaxToken( SyntaxKind.ForwardSlashToken, _window.Location, "/", null );
                 case '*':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.StarToken, _window.WindowStart, "*", null );
+                    return new SyntaxToken( SyntaxKind.StarToken, _window.Location, "*", null );
                 case '(':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.OpenParenthesisToken, _window.WindowStart, "(", null );
+                    return new SyntaxToken( SyntaxKind.OpenParenthesisToken, _window.Location, "(", null );
                 case ')':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.CloseParenthesisToken, _window.WindowStart, ")", null );
+                    return new SyntaxToken( SyntaxKind.CloseParenthesisToken, _window.Location, ")", null );
                 case ',':
                     _window.Next();
-                    return new SyntaxToken( SyntaxKind.CommaToken, _window.WindowStart, ",", null );
+                    return new SyntaxToken( SyntaxKind.CommaToken, _window.Location, ",", null );
                 case '!':
                     _window.Next();
                     if ( _window.Peek() == '=' ) {
                         _window.Next();
-                        return new SyntaxToken( SyntaxKind.BangEqualsToken, _window.WindowStart, "!=", null );
+                        return new SyntaxToken( SyntaxKind.BangEqualsToken, _window.Location, "!=", null );
                     }
-                    return new SyntaxToken( SyntaxKind.BangToken, _window.WindowStart, "!", null );
+                    return new SyntaxToken( SyntaxKind.BangToken, _window.Location, "!", null );
                 case '=':
                     _window.Next();
                     if ( _window.Peek() == '=' ) {
                         _window.Next();
-                        return new SyntaxToken( SyntaxKind.EqualsEqualsToken, _window.WindowStart, "==", null );
+                        return new SyntaxToken( SyntaxKind.EqualsEqualsToken, _window.Location, "==", null );
                     }
-                    return new SyntaxToken( SyntaxKind.EqualsToken, _window.WindowStart, "=", null );
+                    return new SyntaxToken( SyntaxKind.EqualsToken, _window.Location, "=", null );
                 case '&':
                     _window.Next();
                     if ( _window.Peek() == '&' ) {
                         _window.Next();
-                        return new SyntaxToken( SyntaxKind.AmpersandAmpersandToken, _window.WindowStart, "&&", null );
+                        return new SyntaxToken( SyntaxKind.AmpersandAmpersandToken, _window.Location, "&&", null );
                     }
-                    return new SyntaxToken( SyntaxKind.AmpersandToken, _window.WindowStart, "&", null );
+                    return new SyntaxToken( SyntaxKind.AmpersandToken, _window.Location, "&", null );
                 case '|':
                     _window.Next();
                     if ( _window.Peek() == '|' ) {
                         _window.Next();
-                        return new SyntaxToken( SyntaxKind.PipePipeToken, _window.WindowStart, "||", null );
+                        return new SyntaxToken( SyntaxKind.PipePipeToken, _window.Location, "||", null );
                     }
-                    return new SyntaxToken( SyntaxKind.PipeToken, _window.WindowStart, "|", null );
+                    return new SyntaxToken( SyntaxKind.PipeToken, _window.Location, "|", null );
 
                 // numbers
                 case '0':
@@ -93,19 +93,19 @@ namespace CalcLang.CodeAnalysis.Syntax {
                         _window.Next();
                     }
                     var whitespace = _window.Value;
-                    return new SyntaxToken( SyntaxKind.WhiteSpaceToken, _window.WindowStart, whitespace, null );
+                    return new SyntaxToken( SyntaxKind.WhiteSpaceToken, _window.Location, whitespace, null );
 
                 // words
                 case var letter when char.IsLetter( letter ) || letter == '_':
                     var identifer = ReadIdentifier();
                     var kind = SyntaxFacts.GetKeywordKind( identifer );
-                    return new SyntaxToken( kind, _window.WindowStart, identifer, null );
+                    return new SyntaxToken( kind, _window.Location, identifer, null );
 
                 // bad token
                 default:
                     var badToken = ReadUntilWhitespace();
-                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Bad character input: '{badToken}'" ) );
-                    return new SyntaxToken( SyntaxKind.BadToken, _window.WindowStart, badToken, null );
+                    _diagnostics.Add( new Diagnostic( _window.Location, $"Bad character input: '{badToken}'" ) );
+                    return new SyntaxToken( SyntaxKind.BadToken, _window.Location, badToken, null );
 
             }
         }
@@ -133,22 +133,22 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
                 case var letter when char.IsLetter( letter ):
                     _window.Next();
-                    _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected a number, but found '{_window.Value}'" ) );
-                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, null );
+                    _diagnostics.Add( new Diagnostic( _window.Location, $"Expected a number, but found '{_window.Value}'" ) );
+                    return new SyntaxToken( kind, _window.Location, _window.Value, null );
             }
 
             switch ( kind ) {
                 case SyntaxKind.FloatToken:
                     if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out float parsedFloat ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Float32, but found '{_window.Value}'" ) );
+                        _diagnostics.Add( new Diagnostic( _window.Location, $"Expected Float32, but found '{_window.Value}'" ) );
                     }
-                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, parsedFloat );
+                    return new SyntaxToken( kind, _window.Location, _window.Value, parsedFloat );
 
                 case SyntaxKind.IntegerToken:
                     if ( !int.TryParse( _window.Value, out int parsedInt ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.WindowStart, $"Expected Int32, but found '{_window.Value}'" ) );
+                        _diagnostics.Add( new Diagnostic( _window.Location, $"Expected Int32, but found '{_window.Value}'" ) );
                     }
-                    return new SyntaxToken( kind, _window.WindowStart, _window.Value, parsedInt );
+                    return new SyntaxToken( kind, _window.Location, _window.Value, parsedInt );
 
                 default:
                     throw new Exception( $"Unhandled number kind {kind}" );

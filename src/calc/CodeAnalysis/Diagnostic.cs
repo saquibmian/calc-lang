@@ -2,16 +2,16 @@ using System;
 
 namespace CalcLang.CodeAnalysis {
     public sealed class Diagnostic {
-        internal Diagnostic(int position, string message) {
+        internal Diagnostic( Location location, string message ) {
             if ( string.IsNullOrWhiteSpace( message ) ) {
                 throw new ArgumentException( "message", nameof( message ) );
             }
 
-            Position = position;
+            Location = location;
             Message = message;
         }
 
-        public int Position { get; }
+        public Location Location { get; }
         public string Message { get; }
     }
 }

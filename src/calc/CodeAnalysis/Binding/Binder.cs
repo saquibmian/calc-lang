@@ -41,7 +41,7 @@ namespace CalcLang.CodeAnalysis.Binding {
 
             var op = BoundBinaryOperator.Bind( syntax.OperatorToken.Kind, left.ReturnType, right.ReturnType );
             if ( op == null ) {
-                _diagnostics.Add( new Diagnostic( 0, $"Binary operator '{syntax.OperatorToken.ValueText}' is not defined for types {left.ReturnType} and {right.ReturnType}." ) );
+                _diagnostics.Add( new Diagnostic( syntax.OperatorToken.Location, $"Binary operator '{syntax.OperatorToken.ValueText}' is not defined for types {left.ReturnType} and {right.ReturnType}." ) );
                 return left;
             }
 
@@ -53,7 +53,7 @@ namespace CalcLang.CodeAnalysis.Binding {
 
             var op = BoundUnaryOperator.Bind( syntax.OperatorToken.Kind, boundExpresion.ReturnType );
             if ( op == null ) {
-                _diagnostics.Add( new Diagnostic( 0, $"Unary operator '{syntax.OperatorToken.ValueText}' is not defined for type {boundExpresion.ReturnType}." ) );
+                _diagnostics.Add( new Diagnostic( syntax.OperatorToken.Location, $"Unary operator '{syntax.OperatorToken.ValueText}' is not defined for type {boundExpresion.ReturnType}." ) );
                 return boundExpresion;
             }
 

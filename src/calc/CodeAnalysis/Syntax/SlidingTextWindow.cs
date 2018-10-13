@@ -1,32 +1,36 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace CalcLang.CodeAnalysis.Syntax {
     internal sealed class SlidingTextWindow {
         private readonly string _text;
-
-        /// <summary>
-        /// The start of the current window.
-        /// </summary>
         private int _position;
-
-        /// <summary>
-        /// The start of the current window.
-        /// </summary>
         private int _offset;
+        private int _line = 0;
+        private int _col = 0;
+
 
         public SlidingTextWindow( string text ) {
             _text = text ?? throw new System.ArgumentNullException( nameof( text ) );
         }
 
-        internal int WindowStart => _position;
-        internal int WindowEnd => _position + _offset;
+        internal Location Location => new Location( _position, _line, _col );
 
         internal void Start() {
             _position = _position + _offset;
             _offset = 0;
+
+            int indexOfLine = 0;
+            for ( int i = 0; i < _position; ++i ) {
+                if ( _text[i] == '\n' ) {
+                    ++_line;
+                    indexOfLine = i;
+                }
+            }
+            _col = _position - indexOfLine;
         }
 
-        internal void Next() {
-            ++_offset;
-        }
+        internal void Next() => ++_offset;
 
         internal char Peek( int offset = 0 ) {
             var index = _position + _offset + offset;
@@ -36,10 +40,6 @@ namespace CalcLang.CodeAnalysis.Syntax {
             return _text[index];
         }
 
-        internal string Value {
-            get {
-                return _text.Substring( _position, _offset );
-            }
-        }
+        internal string Value => _text.Substring( _position, _offset );
     }
 }
