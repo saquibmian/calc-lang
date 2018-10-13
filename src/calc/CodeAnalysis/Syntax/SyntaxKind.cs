@@ -29,6 +29,11 @@ namespace CalcLang.CodeAnalysis.Syntax {
         UnaryExpression,
         TrueKeyword,
         FalseKeyword,
-        BooleanLiteralExpression
+        BooleanLiteralExpression,
+        EqualsEqualsToken,
+        PipePipeToken,
+        AmpersandAmpersandToken,
+        AmpersandToken,
+        PipeToken
     }
 }
