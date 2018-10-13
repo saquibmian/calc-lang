@@ -1,39 +1,43 @@
 namespace CalcLang.CodeAnalysis.Syntax {
     public enum SyntaxKind {
-        IntegerToken,
+
+        // Tokens
+        BadToken,
         EndOfFileToken,
         WhiteSpaceToken,
-        IdentiferToken,
         PlusToken,
         MinusToken,
         ForwardSlashToken,
         StarToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
-        BadToken,
         CommaToken,
-
-        IntegerLiteralExpression,
-        ExpressionStatement,
-        BinaryExpression,
-        ParenthetizedExpression,
-        InvocationExpression,
-        ArgumentList,
-        SeparatedSyntaxList,
-        Argument,
-        MemberAccessExpression,
         EqualsToken,
-        LocalDeclarationStatement,
-        FloatLiteralExpression,
+        EqualsEqualsToken,
+        PipeToken,
+        PipePipeToken,
+        AmpersandToken,
+        AmpersandAmpersandToken,
+        IntegerToken,
         FloatToken,
-        UnaryExpression,
+        IdentiferToken,
+
+        // Keywords
         TrueKeyword,
         FalseKeyword,
+
+        // Expressions
+        IntegerLiteralExpression,
+        FloatLiteralExpression,
         BooleanLiteralExpression,
-        EqualsEqualsToken,
-        PipePipeToken,
-        AmpersandAmpersandToken,
-        AmpersandToken,
-        PipeToken
+        UnaryExpression,
+        BinaryExpression,
+        ParenthetizedExpression,
+        MemberAccessExpression,
+        InvocationExpression,
+        SeparatedSyntaxList,
+        ArgumentList,
+        Argument,
+
     }
 }
