@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Immutable;
-using CalcLang.CodeAnalysis;
 using CalcLang.CodeAnalysis.Binding;
 using CalcLang.CodeAnalysis.Syntax;
 using Xunit;
@@ -46,35 +43,38 @@ namespace CalcLang {
         [InlineData( "true", true )]
         [InlineData( "false", false )]
         [InlineData( "!false", true )]
-        [InlineData( "false || true", true )]
-        [InlineData( "false && true", false )]
-        [InlineData( "1==1", true )]
-        [InlineData( "!(1==1)", false )]
-        [InlineData( "true==true", true )]
-        [InlineData( "!(true==true)", false )]
-        [InlineData( "1!=1", false )]
-        [InlineData( "!(1!=1)", true )]
-        [InlineData( "true!=true", false )]
-        [InlineData( "!(true!=true)", true )]
-        [InlineData( "1==1&&2==2", true )]
-        [InlineData( "1==2||2==2", true )]
+        [InlineData( "false || true", false || true )]
+        [InlineData( "false && true", false && true )]
+        [InlineData( "1==1", 1 == 1 )]
+        [InlineData( "!(1==1)", !( 1 == 1 ) )]
+        [InlineData( "true==true", true == true )]
+        [InlineData( "!(true==true)", !( true == true ) )]
+        [InlineData( "1!=1", 1 != 1 )]
+        [InlineData( "!(1!=1)", !( 1 != 1 ) )]
+        [InlineData( "true!=true", true != true )]
+        [InlineData( "!(true!=true)", !( true != true ) )]
+        [InlineData( "1==1&&2==2", 1 == 1 && 2 == 2 )]
+        [InlineData( "1==2||2==2", 1 == 2 || 2 == 2 )]
         public void Evaluate( string input, object expectedResult ) {
+            var expr = Expression( input );
+
+            var result = _evaluator.Evaluate( expr );
+
+            Assert.Equal( expectedResult, result );
+        }
+
+        private BoundExpression Expression( string input ) {
             var tree = SyntaxTree.Parse( input );
             Assert.Empty( tree.Diagnostics );
             var expr = Assert.IsAssignableFrom<ExpressionSyntax>( tree.Root );
             var bound = _binder.BindExpression( expr );
             Assert.Empty( _binder.Diagnostics );
-
-            var result = _evaluator.Evaluate( bound );
-
-            Assert.Equal( expectedResult, result );
+            return bound;
         }
 
         private T Expression<T>( string input ) where T : BoundExpression {
-            var tree = SyntaxTree.Parse( input );
-            var expr = Assert.IsAssignableFrom<ExpressionSyntax>( tree.Root );
-            var bound = _binder.BindExpression( expr );
-            return Assert.IsType<T>( bound );
+            var expr = Expression( input );
+            return Assert.IsType<T>( expr );
         }
     }
 }
