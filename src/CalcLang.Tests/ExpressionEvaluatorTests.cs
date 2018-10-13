@@ -56,6 +56,8 @@ namespace CalcLang {
         [InlineData( "!(1!=1)", true )]
         [InlineData( "true!=true", false )]
         [InlineData( "!(true!=true)", true )]
+        [InlineData( "1==1&&2==2", true )]
+        [InlineData( "1==2||2==2", true )]
         public void Evaluate( string input, object expectedResult ) {
             var tree = SyntaxTree.Parse( input );
             Assert.Empty( tree.Diagnostics );
