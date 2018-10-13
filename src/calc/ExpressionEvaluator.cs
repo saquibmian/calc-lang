@@ -7,7 +7,6 @@ using CalcLang.CodeAnalysis.Syntax;
 
 namespace CalcLang {
     public sealed class ExpressionEvaluator {
-
         public object Evaluate( BoundExpression expression ) {
             switch ( expression ) {
                 case BoundLiteralExpression n:
@@ -34,7 +33,7 @@ namespace CalcLang {
         private object Evaluate( BoundUnaryExpresion u ) {
             var expr = Evaluate( u.Expression );
 
-            switch ( u.OperatorKind ) {
+            switch ( u.Op.Kind ) {
                 case BoundUnaryOperatorKind.Identity:
                     return (int)expr;
                 case BoundUnaryOperatorKind.Negation:
@@ -43,7 +42,7 @@ namespace CalcLang {
                     return !(bool)expr;
 
                 default:
-                    throw new Exception( $"Unexpected unary operator {u.OperatorKind}" );
+                    throw new Exception( $"Unexpected unary operator {u.Op}" );
             }
         }
 
@@ -51,7 +50,7 @@ namespace CalcLang {
             var left = Evaluate( b.Left );
             var right = Evaluate( b.Right );
 
-            switch ( b.OperatorKind ) {
+            switch ( b.Op.Kind ) {
                 case BoundBinaryOperatorKind.Equality:
                     return left.Equals( right );
                 case BoundBinaryOperatorKind.Addition:
@@ -68,43 +67,8 @@ namespace CalcLang {
                     return (bool)left || (bool)right;
 
                 default:
-                    throw new Exception( $"Unexpected binary operator {b.OperatorKind}" );
+                    throw new Exception( $"Unexpected binary operator {b.Op}" );
             }
         }
-
-        // TODO
-        // private object Evaluate( InvocationExpressionSyntax i ) {
-        //     // TODO: find a way to determine the return type of the expression
-        //     var args = i.ArgumentList.Arguments.Nodes
-        //         .Select( arg => Evaluate( arg.Expression ) )
-        //         .ToArray();
-        //     var argTypes = args.Select( a => a.GetType() ).ToArray();
-
-        //     var method .GetMethod( (string)i.Member.MemberName.Value, argTypes );
-        //     if ( method == null ) {
-        //         throw new Exception( $"Unknown function '{i.Member.MemberName.Value}'" );
-        //     }
-
-        //     if ( i.ArgumentList.Arguments.Nodes.Count() > method.Parameters.Length ) {
-        //         throw new Exception( "Too many arguments." );
-        //     }
-
-        //     // create a new scope with the args for the method
-        //     var scope .CreateScope();
-        //     for ( int idx = 0; idx < args.Length; ++idx ) {
-        //         scope.SetVariable( method.Parameters[idx].Name, args[idx] );
-        //     }
-
-        //     return method.Execute( scope );
-        // }
-
-        // private object Evaluate( MemberAccessExpressionSyntax m ) {
-        //     if .TryGetVariableValue( (string)m.MemberName.Value, out var value ) ) {
-        //         return value;
-        //     }
-
-        //     throw new Exception( $"Unknown variable '{m.MemberName.Value}'" );
-        // }
-
     }
 }

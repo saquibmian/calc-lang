@@ -1,21 +1,18 @@
 using System;
+using System.Linq;
 
 namespace CalcLang.CodeAnalysis.Binding {
     public sealed class BoundBinaryExpression : BoundExpression {
-        internal BoundBinaryExpression( BoundExpression left, BoundBinaryOperatorKind operatorKind, BoundExpression right ) {
+        internal BoundBinaryExpression( BoundExpression left, BoundBinaryOperator op, BoundExpression right ) {
             Left = left;
-            OperatorKind = operatorKind;
+            Op = op;
             Right = right;
         }
 
         public BoundExpression Left { get; }
-        public BoundBinaryOperatorKind OperatorKind { get; }
+        public BoundBinaryOperator Op { get; }
         public BoundExpression Right { get; }
-
-        // TODO fix this
-        public override Type ReturnType => Left.ReturnType;
-
+        public override Type ReturnType => Op.ReturnType;
         public override BoundNodeKind Kind => BoundNodeKind.BinaryExpression;
     }
-
 }
