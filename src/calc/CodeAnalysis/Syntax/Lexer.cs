@@ -9,7 +9,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         private readonly List<Diagnostic> _diagnostics = new List<Diagnostic>();
 
         public Lexer( string input ) {
-            _window = new SlidingTextWindow( input ?? throw new System.ArgumentNullException( nameof( input ) ) );
+            _window = new SlidingTextWindow( input ?? throw new ArgumentNullException( nameof( input ) ) );
         }
 
         public IEnumerable<Diagnostic> Diagnostics => _diagnostics;
