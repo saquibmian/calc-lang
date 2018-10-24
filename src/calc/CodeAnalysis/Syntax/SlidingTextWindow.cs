@@ -20,6 +20,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
             _position = _position + _offset;
             _offset = 0;
 
+            _line = 0;
             int indexOfLine = 0;
             for ( int i = 0; i < _position; ++i ) {
                 if ( _text[i] == '\n' ) {
