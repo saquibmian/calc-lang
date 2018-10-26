@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,29 +7,16 @@ namespace CalcLang.CodeAnalysis.Syntax {
         private readonly string _text;
         private int _position;
         private int _offset;
-        private int _line = 0;
-        private int _col = 0;
-
 
         public SlidingTextWindow( string text ) {
-            _text = text ?? throw new System.ArgumentNullException( nameof( text ) );
+            _text = text ?? throw new ArgumentNullException( nameof( text ) );
         }
 
-        internal Location Location => new Location( _position, _line, _col );
+        internal Location Location => new Location( _position, _offset );
 
         internal void Start() {
             _position = _position + _offset;
             _offset = 0;
-
-            _line = 0;
-            int indexOfLine = 0;
-            for ( int i = 0; i < _position; ++i ) {
-                if ( _text[i] == '\n' ) {
-                    ++_line;
-                    indexOfLine = i;
-                }
-            }
-            _col = _position - indexOfLine;
         }
 
         internal void Next() => ++_offset;

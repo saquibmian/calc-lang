@@ -1,17 +1,15 @@
 namespace CalcLang.CodeAnalysis {
     public sealed class Location {
-        internal Location( int position, int line, int column ) {
+        internal Location( int position, int length ) {
             Position = position;
-            Line = line;
-            Column = column;
+            Length = length;
         }
 
         public int Position { get; }
-        public int Line { get; }
-        public int Column { get; }
+        public int Length { get; }
 
         public override string ToString() {
-            return $"({Line},{Column})";
+            return $"({Position})";
         }
     }
 }
