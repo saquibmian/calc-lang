@@ -95,8 +95,59 @@ namespace CalcLang.CodeAnalysis.Syntax {
                     var whitespace = _window.Value;
                     return new SyntaxToken( SyntaxKind.WhiteSpaceToken, _window.Location, whitespace, null );
 
-                // words
-                case var letter when char.IsLetter( letter ) || letter == '_':
+                case 'a':
+                case 'b':
+                case 'c':
+                case 'd':
+                case 'e':
+                case 'f':
+                case 'g':
+                case 'h':
+                case 'i':
+                case 'j':
+                case 'k':
+                case 'l':
+                case 'm':
+                case 'n':
+                case 'o':
+                case 'p':
+                case 'q':
+                case 'r':
+                case 's':
+                case 't':
+                case 'u':
+                case 'v':
+                case 'w':
+                case 'x':
+                case 'y':
+                case 'z':
+                case 'A':
+                case 'B':
+                case 'C':
+                case 'D':
+                case 'E':
+                case 'F':
+                case 'G':
+                case 'H':
+                case 'I':
+                case 'J':
+                case 'K':
+                case 'L':
+                case 'M':
+                case 'N':
+                case 'O':
+                case 'P':
+                case 'Q':
+                case 'R':
+                case 'S':
+                case 'T':
+                case 'U':
+                case 'V':
+                case 'W':
+                case 'X':
+                case 'Y':
+                case 'Z':
+                case '_':
                     var identifer = ReadIdentifier();
                     var kind = SyntaxFacts.GetKeywordKind( identifer );
                     return new SyntaxToken( kind, _window.Location, identifer, null );
@@ -156,7 +207,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         }
 
         private string ReadIdentifier() {
-            while ( char.IsLetterOrDigit( _window.Peek() ) || _window.Peek() == '_' ) {
+            while ( IsIdentifierChar( _window.Peek() ) ) {
                 _window.Next();
             }
             return _window.Value;
@@ -174,6 +225,10 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 _window.Next();
             }
             return _window.Value;
+        }
+
+        private bool IsIdentifierChar( char c ) {
+            return c == '_' || char.IsLetter( c ) || char.IsNumber( c );
         }
 
     }
