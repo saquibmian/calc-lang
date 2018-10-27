@@ -79,7 +79,8 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
             var expr = ParseExpression<InvocationExpressionSyntax>( input );
 
-            Assert.Equal( "foo", expr.Member.MemberName.ValueText );
+            var member = Assert.IsType<MemberAccessExpressionSyntax>( expr.Expression );
+            Assert.Equal( "foo", member.MemberName.ValueText );
             Assert.Empty( expr.ArgumentList.Arguments.Nodes );
         }
 
@@ -100,6 +101,13 @@ namespace CalcLang.CodeAnalysis.Syntax {
             Assert.Equal( "_bar", fourthArg.MemberName.ValueText );
             var fifthArg = Assert.IsType<ParenthetizedExpressionSyntax>( args[4].Expression );
             var fifthArgExpression = Assert.IsType<BinaryExpressionSyntax>( fifthArg.Expression );
+        }
+
+        [Fact]
+        public void ComplexInvocation__Valid__ParsesArgumentsCorrectly() {
+            const string input = "user.Foo(1, Bar(2), 2.5, _bar.ToString().GetHashCode().Too.Bar(), (1+2 ).LongValue.Tomorrow , (foo.ToString)().GetHashCode())";
+
+            var expr = ParseExpression<InvocationExpressionSyntax>( input );
         }
 
         private T ParseExpression<T>( string input ) where T : ExpressionSyntax {

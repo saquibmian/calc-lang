@@ -12,6 +12,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         OpenParenthesisToken,
         CloseParenthesisToken,
         CommaToken,
+        DotToken,
         EqualsToken,
         EqualsEqualsToken,
         BangEqualsToken,

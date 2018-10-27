@@ -88,18 +88,37 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
                 case SyntaxKind.IdentiferToken:
                     var memberName = Expect( SyntaxKind.IdentiferToken );
-                    var memberAccess = new MemberAccessExpressionSyntax( memberName );
-                    if ( Current.Kind != SyntaxKind.OpenParenthesisToken ) {
-                        return memberAccess;
+                    ExpressionSyntax expr = new MemberAccessExpressionSyntax( memberName );
+                    while ( Current.Kind == SyntaxKind.DotToken || Current.Kind == SyntaxKind.OpenParenthesisToken ) {
+                        if ( Current.Kind == SyntaxKind.DotToken ) {
+                            var dotToken = Expect( SyntaxKind.DotToken );
+                            memberName = Expect( SyntaxKind.IdentiferToken );
+                            expr = new MemberAccessExpressionSyntax( expr, dotToken, memberName );
+                        }
+                        if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
+                            var arguments = ParseArgumentList();
+                            expr = new InvocationExpressionSyntax( expr, arguments );
+                        }
                     }
-                    var arguments = ParseArgumentList();
-                    return new InvocationExpressionSyntax( memberAccess, arguments );
+                    return expr;
 
                 case SyntaxKind.OpenParenthesisToken:
                     var open = Expect( SyntaxKind.OpenParenthesisToken );
                     var expression = ParseExpression();
                     var close = Expect( SyntaxKind.CloseParenthesisToken );
-                    return new ParenthetizedExpressionSyntax( open, expression, close );
+                    expression = new ParenthetizedExpressionSyntax( open, expression, close );
+                    while ( Current.Kind == SyntaxKind.DotToken || Current.Kind == SyntaxKind.OpenParenthesisToken ) {
+                        if ( Current.Kind == SyntaxKind.DotToken ) {
+                            var dotToken = Expect( SyntaxKind.DotToken );
+                            memberName = Expect( SyntaxKind.IdentiferToken );
+                            expression = new MemberAccessExpressionSyntax( expression, dotToken, memberName );
+                        }
+                        if ( Current.Kind == SyntaxKind.OpenParenthesisToken ) {
+                            var arguments = ParseArgumentList();
+                            expression = new InvocationExpressionSyntax( expression, arguments );
+                        }
+                    }
+                    return expression;
 
                 case SyntaxKind.IntegerToken:
                     var intToken = Expect( SyntaxKind.IntegerToken );

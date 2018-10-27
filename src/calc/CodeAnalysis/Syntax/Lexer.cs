@@ -45,6 +45,9 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 case ',':
                     _window.Next();
                     return new SyntaxToken( SyntaxKind.CommaToken, _window.Location, ",", null );
+                case '.':
+                    _window.Next();
+                    return new SyntaxToken( SyntaxKind.DotToken, _window.Location, ".", null );
                 case '!':
                     _window.Next();
                     if ( _window.Peek() == '=' ) {
