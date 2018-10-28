@@ -17,7 +17,12 @@ namespace CalcLang {
             while ( !_done ) {
                 Console.Write( "> " );
                 var statement = Console.ReadLine();
-                Execute( statement );
+                try {
+                    Execute( statement );
+                } catch ( Exception e ) {
+                    Console.Error.WriteLine( $"Interpretor error: {e.Message}." );
+                    // do nothing
+                }
             }
         }
 
