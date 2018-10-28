@@ -158,7 +158,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 // bad token
                 default:
                     var badToken = ReadUntilWhitespace();
-                    _diagnostics.Add( new Diagnostic( _window.Location, $"Bad character input: '{badToken}'" ) );
+                    _diagnostics.Add( Diagnostic.Create( DiagnosticDescriptors.BadCharacterInput, _window.Location, badToken ) );
                     return new SyntaxToken( SyntaxKind.BadToken, _window.Location, badToken, null );
 
             }
@@ -187,20 +187,20 @@ namespace CalcLang.CodeAnalysis.Syntax {
 
                 case var letter when char.IsLetter( letter ):
                     _window.Next();
-                    _diagnostics.Add( new Diagnostic( _window.Location, $"Expected a number, but found '{_window.Value}'" ) );
+                    _diagnostics.Add( Diagnostic.Create( DiagnosticDescriptors.UnexpectedLiteralType, _window.Location, "number", _window.Value ) );
                     return new SyntaxToken( kind, _window.Location, _window.Value, null );
             }
 
             switch ( kind ) {
                 case SyntaxKind.FloatToken:
                     if ( !float.TryParse( _window.Value.TrimEnd( 'f' ), out float parsedFloat ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.Location, $"Expected Float32, but found '{_window.Value}'" ) );
+                        _diagnostics.Add( Diagnostic.Create( DiagnosticDescriptors.UnexpectedLiteralType, _window.Location, typeof( float ), _window.Value ) );
                     }
                     return new SyntaxToken( kind, _window.Location, _window.Value, parsedFloat );
 
                 case SyntaxKind.IntegerToken:
                     if ( !int.TryParse( _window.Value, out int parsedInt ) ) {
-                        _diagnostics.Add( new Diagnostic( _window.Location, $"Expected Int32, but found '{_window.Value}'" ) );
+                        _diagnostics.Add( Diagnostic.Create( DiagnosticDescriptors.UnexpectedLiteralType, _window.Location, typeof( int ), _window.Value ) );
                     }
                     return new SyntaxToken( kind, _window.Location, _window.Value, parsedInt );
 

@@ -41,7 +41,7 @@ namespace CalcLang.CodeAnalysis.Syntax {
         private SyntaxToken Expect( SyntaxKind kind ) {
             var token = Current;
             if ( token.Kind != kind ) {
-                _diagnostics.Add( new Diagnostic( Current.Location, $"Unexpected token <{Current.Kind}>, expected <{kind}>" ) );
+                _diagnostics.Add( Diagnostic.Create( DiagnosticDescriptors.UnexpectedToken, Current.Location, Current.Kind, kind ) );
                 token = new SyntaxToken( kind, Current.Location, null, null );
             }
 
