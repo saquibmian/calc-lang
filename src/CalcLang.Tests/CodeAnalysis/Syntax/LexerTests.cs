@@ -51,6 +51,12 @@ namespace CalcLang.CodeAnalysis.Syntax {
                 yield return ("=", SyntaxKind.EqualsToken);
                 yield return ("==", SyntaxKind.EqualsEqualsToken);
                 yield return ("!=", SyntaxKind.BangEqualsToken);
+
+                // TODO(snm): make the dot work better
+                // yield return (".", SyntaxKind.DotToken);
+                yield return (",", SyntaxKind.CommaToken);
+                yield return ("(", SyntaxKind.OpenParenthesisToken);
+                yield return (")", SyntaxKind.CloseParenthesisToken);
             }
         }
 
